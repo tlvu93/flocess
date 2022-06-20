@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 
 interface Draggable {
   children?: ReactNode;
-  dragObject: Function;
-  onDragStart: Function;
+  dragObject: DragObject;
+  onDragStart: { (dragData: DragData): void };
   onDragEnd: Function;
 }
 
@@ -24,7 +24,7 @@ const Draggable = ({
     ];
 
     // Pass the drag data
-    onDragStart({ dragObject, offset });
+    onDragStart({ dragObject, offset } as DragData);
   };
 
   const onDragEnding = (e: React.DragEvent<HTMLDivElement>) => {
@@ -38,3 +38,5 @@ const Draggable = ({
     </div>
   );
 };
+
+export default Draggable;
