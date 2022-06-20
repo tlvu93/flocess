@@ -16,8 +16,6 @@ interface DraggableBlocks {
 
 const DraggableBlocks = ({ setDragData }: DraggableBlocks) => {
   const onDragStart = (dragData: DragData) => {
-    console.log(typeof dragData);
-    console.log(dragData);
     setDragData(dragData);
   };
 

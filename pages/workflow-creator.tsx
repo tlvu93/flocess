@@ -8,7 +8,6 @@ type Props = {};
 
 function WorkflowCreator({}: Props) {
   const [draggedData, setDragData] = useState({});
-  console.log(draggedData);
 
   return (
     <div className='App'>

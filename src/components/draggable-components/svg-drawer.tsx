@@ -8,7 +8,7 @@ export default class SVGDrawer {
   static draw(nodes: DragObject[]) {
     d3.select('svg')
       .selectAll<SVGSVGElement, DragObject>('.node')
-      .data(nodes, (data) => data.id)
+      .data(nodes, (node) => node.id)
       .join((enter) => {
         // Draw a group node that will contain the squre and the text
         const node = enter
@@ -16,7 +16,7 @@ export default class SVGDrawer {
           .attr('class', 'node')
           .attr(
             'transform',
-            (data) => 'translate(' + data.x + ',' + data.y + ')'
+            (node) => 'translate(' + node.x + ',' + node.y + ')'
           );
 
         // Append the square
@@ -26,7 +26,7 @@ export default class SVGDrawer {
           .attr('y', 0)
           .attr('width', 72)
           .attr('height', 72)
-          .attr('fill', (data) => data.color);
+          .attr('fill', (node) => node.color);
 
         // Append the text
         node
@@ -36,7 +36,9 @@ export default class SVGDrawer {
           .attr('width', 72)
           .attr('dominant-baseline', 'middle')
           .attr('text-anchor', 'middle')
-          .text((data) => data.name);
+          .text((node) => node.name);
+
+        return node;
       });
   }
 }
