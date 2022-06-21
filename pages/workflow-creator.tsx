@@ -12,9 +12,8 @@ function WorkflowCreator({}: Props) {
   return (
     <div className='App'>
       <SVGArea draggedData={draggedData} />
-      <button>tets</button>
-      <ComponentList />
-      <DraggableBlocks
+
+      <ComponentList
         setDragData={(dragData: Object) => setDragData(dragData)}
       />
     </div>
