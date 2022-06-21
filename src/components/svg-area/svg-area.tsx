@@ -1,9 +1,7 @@
 import * as d3 from 'd3';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import SVGDrawer from './svg-drawer';
-
-const nodes: DragObject[] = [];
 
 /**
  * Convert DOM coordinates to SVG coordinates based on SVG offset and zoom level
@@ -29,9 +27,11 @@ interface SVGArea {
 }
 
 const SVGArea = ({ draggedData }: SVGArea) => {
+  const [nodes, setNodes] = useState<NodeData[]>([]);
+
   useEffect(() => {
     SVGDrawer.draw(nodes);
-  }, []);
+  }, [nodes]);
 
   const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -44,7 +44,14 @@ const SVGArea = ({ draggedData }: SVGArea) => {
 
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
+
     d3.select('svg').classed('drag-over', false);
+
+    // Check if the dropped Element is a dropableElement
+    const identifier = e.dataTransfer.getData('text');
+    if (identifier !== 'dropableElement') {
+      return;
+    }
 
     // Get the correct coordinates for this node
     const dragData = draggedData as DragData;
@@ -55,16 +62,16 @@ const SVGArea = ({ draggedData }: SVGArea) => {
     );
 
     // Add the node to the list of nodes.
-    nodes.push({
+
+    const newNode: NodeData = {
       id: nodes.length + 1,
       name: dragData.dragObject.name,
       color: dragData.dragObject.color,
       x,
       y,
-    });
+    };
 
-    // Redraw the nodes
-    SVGDrawer.draw(nodes);
+    setNodes([...nodes, newNode]);
 
     return false;
   };

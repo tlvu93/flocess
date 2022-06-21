@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 interface Draggable {
   children?: ReactNode;
-  dragObject: DragObject;
+  dragObject: NodeData;
   onDragStart: { (dragData: DragData): void };
   onDragEnd: Function;
 }
@@ -22,6 +22,9 @@ const Draggable = ({
       e.clientX - boundingRect.left,
       e.clientY - boundingRect.top,
     ];
+
+    // Set the text data as identifier for onDrop
+    e.dataTransfer.setData('text/plain', 'dropableElement');
 
     // Pass the drag data
     onDragStart({ dragObject, offset } as DragData);

@@ -3,7 +3,7 @@ declare module '*.svg' {
   export default content;
 }
 
-interface DragObject {
+interface NodeData {
   id: number;
   x?: number;
   y?: number;
@@ -12,6 +12,6 @@ interface DragObject {
 }
 
 type DragData = {
-  dragObject: DragObject;
+  dragObject: NodeData;
   offset: [number, number];
 };

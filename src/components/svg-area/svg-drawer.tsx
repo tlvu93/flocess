@@ -5,9 +5,9 @@ import * as d3 from 'd3';
  * Each time this is called we only draw the added nodes since we are using "enter" only
  */
 export default class SVGDrawer {
-  static draw(nodes: DragObject[]) {
+  static draw(nodes: NodeData[]) {
     d3.select('svg')
-      .selectAll<SVGSVGElement, DragObject>('.node')
+      .selectAll<SVGSVGElement, NodeData>('.node')
       .data(nodes, (node) => node.id)
       .join((enter) => {
         // Draw a group node that will contain the squre and the text
@@ -36,6 +36,7 @@ export default class SVGDrawer {
           .attr('width', 72)
           .attr('dominant-baseline', 'middle')
           .attr('text-anchor', 'middle')
+          .attr('class', 'select-none')
           .text((node) => node.name);
 
         return node;
