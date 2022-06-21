@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import ComponentList from '../src/components/component-list/component-list';
-import DraggableBlocks from '../src/components/draggable-components/draggable-blocks';
-import SVGArea from '../src/components/svg-area/svg-area';
+import ComponentList from '@components/component-list/component-list';
+import { DraggableBlocks } from '@components/draggable-components';
+import { SVGArea } from '@components/svg-area';
 
 type Props = {};
 
