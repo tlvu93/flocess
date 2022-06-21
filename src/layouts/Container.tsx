@@ -6,11 +6,11 @@ interface Props {
 
 const Container = ({ children, ...props }: Props) => {
   return (
-    <section className='px-8 py-6 bg-gray-100 md:px-0'>
-      <div className='max-w-5xl mx-auto'>
+    <section className='bg-gray-700 px-8 py-6 md:px-0'>
+      <div className='mx-auto max-w-5xl'>
         <div className='mx-4 flex items-center justify-center'>
-          <div className='w-full mt-8 md:mt-0'>
-            <div className='p-8 py-10 overflow-hidden bg-white border-b-2 border-gray-300 rounded-lg shadow-xl px-7'>
+          <div className='mt-8 w-full md:mt-0'>
+            <div className='overflow-hidden rounded-lg border-b-2 border-gray-700 bg-gray-800 p-8 py-10 px-7 text-white shadow-xl'>
               {children}
             </div>
           </div>
