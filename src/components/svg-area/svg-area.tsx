@@ -83,7 +83,7 @@ const SVGArea = ({ draggedData }: SVGArea) => {
       onDragLeave={() => onDragLeave()}
       onDragOver={(e) => onDragOver(e)}
     >
-      <svg></svg>
+      <svg className='h-96 w-full'> </svg>
     </div>
   );
 };

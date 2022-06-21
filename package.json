@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "d3": "^7.4.4",
+    "install": "^0.13.0",
     "next": "12.1.6",
+    "npm": "^8.12.2",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@types/d3": "^7.4.0",

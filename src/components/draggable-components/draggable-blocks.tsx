@@ -2,19 +2,12 @@ import { DragEvent } from 'react';
 
 import Draggable from './draggable';
 
-const blocks = [
-  { id: 1, name: 'A', color: 'blue' },
-  { id: 2, name: 'B', color: 'pink' },
-  { id: 3, name: 'C', color: 'green' },
-  { id: 4, name: 'D', color: 'yellow' },
-  { id: 5, name: 'E', color: 'purple' },
-];
-
 interface DraggableBlocks {
+  tasks: NodeData[];
   setDragData: Function;
 }
 
-const DraggableBlocks = ({ setDragData }: DraggableBlocks) => {
+const DraggableBlocks = ({ tasks, setDragData }: DraggableBlocks) => {
   const onDragStart = (dragData: DragData) => {
     setDragData(dragData);
   };
@@ -23,7 +16,7 @@ const DraggableBlocks = ({ setDragData }: DraggableBlocks) => {
 
   return (
     <div className='dragging-blocks'>
-      {blocks.map((b) => (
+      {tasks.map((b) => (
         <Draggable
           key={b.name}
           dragObject={b}

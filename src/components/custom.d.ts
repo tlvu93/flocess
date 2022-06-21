@@ -4,7 +4,7 @@ declare module '*.svg' {
 }
 
 interface NodeData {
-  id: number;
+  id: string;
   x?: number;
   y?: number;
   name: string;
