@@ -4,16 +4,16 @@ import { DraggableBlocks } from '@components/draggable-components';
 import Container from '@layouts/Container';
 
 interface ComponentList {
-  tasks: NodeData[];
+  tasks: TaskData[];
   addTask: () => void;
-  setDragData: (dragData: Object) => void;
+  setSelectedTask: (dragData: TaskData) => void;
   setModalState: (open?: boolean) => void;
 }
 
 function ComponentList({
   tasks,
   addTask,
-  setDragData,
+  setSelectedTask: setSelectedTask,
   setModalState,
 }: ComponentList) {
   return (
@@ -21,7 +21,7 @@ function ComponentList({
       <Container>
         <div className='flex h-24 flex-row justify-between'>
           <div className='max'>
-            <DraggableBlocks tasks={tasks} setDragData={setDragData} />
+            <DraggableBlocks tasks={tasks} setDragData={setSelectedTask} />
           </div>
           <button
             onClick={() => setModalState(true)}

@@ -1,7 +1,9 @@
 import React from 'react';
 
 interface EditModal {
+  selectedTask: TaskData;
   setModalState: (open: boolean) => void;
+  setSelectedTask: (dragData: TaskData) => void;
 }
 
 function EditModal({ setModalState }: EditModal) {
@@ -26,11 +28,11 @@ function EditModal({ setModalState }: EditModal) {
             {/*body*/}
             <div className='relative flex-auto p-6'>
               <p className='my-4 text-lg leading-relaxed text-slate-500'>
-                I always felt like I could do anything. That’s the main thing
-                people are controlled by! Thoughts- their perception of
-                themselves! They're slowed down by their perception of
-                themselves. If you're taught you can’t do anything, you won’t do
-                anything. I was taught I could do everything.
+                I always felt like I could do anything. That&apos;s the main
+                thing people are controlled by! Thoughts- their perception of
+                themselves! They&apos;re slowed down by their perception of
+                themselves. If you&apos;re taught you can&apos;t do anything,
+                you won&apos;t do anything. I was taught I could do everything.
               </p>
             </div>
             {/*footer*/}

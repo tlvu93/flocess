@@ -5,7 +5,7 @@ import ComponentList from '@components/component-list/component-list';
 import EditModal from '@components/edit-modal/edit-modal';
 import { SVGArea } from '@components/svg-area';
 
-const TASK_COMPONENTS = [
+const DUMMY_TASK_COMPONENTS = [
   { id: uuid(), name: 'A', color: 'blue' },
   { id: uuid(), name: 'B', color: 'pink' },
   { id: uuid(), name: 'C', color: 'green' },
@@ -18,9 +18,9 @@ const WORKFLOW = {};
 type Props = {};
 
 function WorkflowCreator({}: Props) {
-  const [tasks, setTasks] = useState<NodeData[]>(TASK_COMPONENTS);
+  const [tasks, setTasks] = useState<TaskData[]>(DUMMY_TASK_COMPONENTS);
   const [showModal, setShowModal] = useState<boolean>(true);
-  const [draggedData, setDragData] = useState({});
+  const [selectedTask, setSelectedTask] = useState<TaskData>({} as TaskData);
 
   const addTask = () => {
     let newTask = {
@@ -28,7 +28,7 @@ function WorkflowCreator({}: Props) {
       name: 'newTask',
       color: 'red',
     };
-    // add to tasks
+
     setTasks([...tasks, newTask]);
   };
 
@@ -41,15 +41,21 @@ function WorkflowCreator({}: Props) {
 
   return (
     <div className='App'>
-      <SVGArea draggedData={draggedData} />
+      <SVGArea draggedData={selectedTask} />
 
       <ComponentList
         tasks={tasks}
         addTask={addTask}
-        setDragData={(dragData: Object) => setDragData(dragData)}
+        setSelectedTask={(dragData) => setSelectedTask(dragData)}
         setModalState={setModalState}
       />
-      {showModal && <EditModal setModalState={setModalState} />}
+      {showModal && (
+        <EditModal
+          selectedTask={selectedTask}
+          setSelectedTask={(dragData) => setSelectedTask(dragData)}
+          setModalState={setModalState}
+        />
+      )}
     </div>
   );
 }

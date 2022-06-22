@@ -3,12 +3,12 @@ import { DragEvent } from 'react';
 import Draggable from './draggable';
 
 interface DraggableBlocks {
-  tasks: NodeData[];
+  tasks: TaskData[];
   setDragData: Function;
 }
 
 const DraggableBlocks = ({ tasks, setDragData }: DraggableBlocks) => {
-  const onDragStart = (dragData: DragData) => {
+  const onDragStart = (dragData: DraggedTaskData) => {
     setDragData(dragData);
   };
 
