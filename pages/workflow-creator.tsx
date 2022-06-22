@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import ComponentList from '@components/component-list/component-list';
-import { DraggableBlocks } from '@components/draggable-components';
+import EditModal from '@components/edit-modal/edit-modal';
 import { SVGArea } from '@components/svg-area';
 
 const TASK_COMPONENTS = [
@@ -19,6 +19,7 @@ type Props = {};
 
 function WorkflowCreator({}: Props) {
   const [tasks, setTasks] = useState<NodeData[]>(TASK_COMPONENTS);
+  const [showModal, setShowModal] = useState<boolean>(true);
   const [draggedData, setDragData] = useState({});
 
   const addTask = () => {
@@ -31,15 +32,24 @@ function WorkflowCreator({}: Props) {
     setTasks([...tasks, newTask]);
   };
 
+  const setModalState = (open?: boolean) => {
+    if (open !== undefined) setShowModal(open);
+    else {
+      setShowModal(!showModal);
+    }
+  };
+
   return (
     <div className='App'>
       <SVGArea draggedData={draggedData} />
 
       <ComponentList
-        {...tasks}
+        tasks={tasks}
         addTask={addTask}
         setDragData={(dragData: Object) => setDragData(dragData)}
+        setModalState={setModalState}
       />
+      {showModal && <EditModal setModalState={setModalState} />}
     </div>
   );
 }

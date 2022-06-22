@@ -6,10 +6,16 @@ import Container from '@layouts/Container';
 interface ComponentList {
   tasks: NodeData[];
   addTask: () => void;
-  setDragData: () => void;
+  setDragData: (dragData: Object) => void;
+  setModalState: (open?: boolean) => void;
 }
 
-function ComponentList({ tasks, addTask, setDragData }: ComponentList) {
+function ComponentList({
+  tasks,
+  addTask,
+  setDragData,
+  setModalState,
+}: ComponentList) {
   return (
     <div>
       <Container>
@@ -18,7 +24,7 @@ function ComponentList({ tasks, addTask, setDragData }: ComponentList) {
             <DraggableBlocks tasks={tasks} setDragData={setDragData} />
           </div>
           <button
-            onClick={() => addTask()}
+            onClick={() => setModalState(true)}
             className='rounded-xl bg-yellow-500 p-4 text-xl font-bold text-gray-800 hover:bg-yellow-600'
           >
             + New Task
