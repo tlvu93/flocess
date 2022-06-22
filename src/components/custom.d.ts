@@ -3,7 +3,7 @@ declare module '*.svg' {
   export default content;
 }
 
-interface NodeData {
+interface TaskData {
   id: string;
   x?: number;
   y?: number;
@@ -11,7 +11,16 @@ interface NodeData {
   color: Color;
 }
 
-type DragData = {
-  dragObject: NodeData;
+type DraggedData = {
+  draggedData: TaskData;
   offset: [number, number];
 };
+
+interface TaskContext {
+  tasks: TaskData[];
+  addTask: () => void;
+  selectedTask: TaskData;
+  setSelectedTask: (taskData: TaskData) => void;
+  draggedTask: DraggedData;
+  setDraggedTask: (draggedTaskData: DraggedData) => void;
+}

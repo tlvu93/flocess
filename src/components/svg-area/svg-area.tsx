@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
 import { useEffect, useState } from 'react';
 
+import { useTaskContext } from '@pages/workflow-creator';
+
 import SVGDrawer from './svg-drawer';
 
 /**
@@ -22,12 +24,9 @@ const convertCoordinatesDOMtoSVG = (
   return pt.matrixTransform(domMatrix.inverse());
 };
 
-interface SVGArea {
-  draggedData: DragData | Object;
-}
-
-const SVGArea = ({ draggedData }: SVGArea) => {
-  const [nodes, setNodes] = useState<NodeData[]>([]);
+const SVGArea = () => {
+  const { draggedTask } = useTaskContext() as TaskContext;
+  const [nodes, setNodes] = useState<TaskData[]>([]);
 
   useEffect(() => {
     SVGDrawer.draw(nodes);
@@ -54,7 +53,7 @@ const SVGArea = ({ draggedData }: SVGArea) => {
     }
 
     // Get the correct coordinates for this node
-    const dragData = draggedData as DragData;
+    const dragData = draggedTask as DraggedData;
     const { x, y } = convertCoordinatesDOMtoSVG(
       d3.select('svg'),
       e.clientX - dragData.offset[0],
@@ -63,10 +62,10 @@ const SVGArea = ({ draggedData }: SVGArea) => {
 
     // Add the node to the list of nodes.
 
-    const newNode: NodeData = {
+    const newNode: TaskData = {
       id: (nodes.length + 1).toString(),
-      name: dragData.dragObject.name,
-      color: dragData.dragObject.color,
+      name: dragData.draggedData.name,
+      color: dragData.draggedData.color,
       x,
       y,
     };

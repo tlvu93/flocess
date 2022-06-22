@@ -1,30 +1,29 @@
 import { DragEvent } from 'react';
 
+import { useTaskContext } from '@pages/workflow-creator';
+
 import Draggable from './draggable';
 
-interface DraggableBlocks {
-  tasks: NodeData[];
-  setDragData: Function;
-}
+const DraggableBlocks = () => {
+  const { tasks, setDraggedTask } = useTaskContext() as TaskContext;
 
-const DraggableBlocks = ({ tasks, setDragData }: DraggableBlocks) => {
-  const onDragStart = (dragData: DragData) => {
-    setDragData(dragData);
+  const onDragStart = (draggedTaskData: DraggedData) => {
+    setDraggedTask(draggedTaskData);
   };
 
   const onDragEnd = () => {};
 
   return (
     <div className='flex gap-x-4'>
-      {tasks.map((b) => (
+      {tasks.map((task) => (
         <Draggable
-          key={b.name}
-          dragObject={b}
+          key={task.name}
+          data={task}
           onDragStart={(dragData) => onDragStart(dragData)}
           onDragEnd={() => onDragEnd()}
         >
-          <div className='block' style={{ backgroundColor: b.color }}>
-            {b.name}
+          <div className='block' style={{ backgroundColor: task.color }}>
+            {task.name}
           </div>
         </Draggable>
       ))}
