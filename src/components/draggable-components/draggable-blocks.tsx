@@ -15,7 +15,7 @@ const DraggableBlocks = ({ tasks, setDragData }: DraggableBlocks) => {
   const onDragEnd = () => {};
 
   return (
-    <div className='dragging-blocks'>
+    <div className='flex gap-x-4'>
       {tasks.map((b) => (
         <Draggable
           key={b.name}

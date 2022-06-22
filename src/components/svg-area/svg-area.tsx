@@ -64,7 +64,7 @@ const SVGArea = ({ draggedData }: SVGArea) => {
     // Add the node to the list of nodes.
 
     const newNode: NodeData = {
-      id: nodes.length + 1,
+      id: (nodes.length + 1).toString(),
       name: dragData.dragObject.name,
       color: dragData.dragObject.color,
       x,

@@ -27,14 +27,9 @@ a {
 
 /* Temporary */
 
-.dragging-blocks {
-  color: black;
-  display: flex;
-}
-
-.draggable {
+/* .draggable {
   margin: 5px;
-}
+} */
 
 .block {
   padding: 10px;
@@ -48,12 +43,12 @@ a {
   justify-content: center;
 }
 
-.node rect {
+/* .node rect {
   stroke: black;
   stroke-width: 1px;
-}
+} */
 
-.node text {
+/* .node text {
   font-size: 20px;
   color: black;
-}
+} */
