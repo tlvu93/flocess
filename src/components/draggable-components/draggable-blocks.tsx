@@ -22,7 +22,10 @@ const DraggableBlocks = () => {
           onDragStart={(dragData) => onDragStart(dragData)}
           onDragEnd={() => onDragEnd()}
         >
-          <div className='block' style={{ backgroundColor: task.color }}>
+          <div
+            className='draggable-block'
+            style={{ backgroundColor: task.color }}
+          >
             {task.name}
           </div>
         </Draggable>

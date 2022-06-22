@@ -77,7 +77,7 @@ const SVGArea = () => {
 
   return (
     <div
-      className='svgContainer'
+      className='m-1'
       onDrop={(e) => onDrop(e)}
       onDragLeave={() => onDragLeave()}
       onDragOver={(e) => onDragOver(e)}
