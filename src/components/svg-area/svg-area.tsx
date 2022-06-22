@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
 import { useEffect, useState } from 'react';
 
+import { useTaskContext } from '@pages/workflow-creator';
+
 import SVGDrawer from './svg-drawer';
 
 /**
@@ -22,11 +24,8 @@ const convertCoordinatesDOMtoSVG = (
   return pt.matrixTransform(domMatrix.inverse());
 };
 
-interface SVGArea {
-  draggedData: DraggedTaskData | Object;
-}
-
-const SVGArea = ({ draggedData }: SVGArea) => {
+const SVGArea = () => {
+  const { draggedTask } = useTaskContext() as TaskContext;
   const [nodes, setNodes] = useState<TaskData[]>([]);
 
   useEffect(() => {
@@ -54,7 +53,7 @@ const SVGArea = ({ draggedData }: SVGArea) => {
     }
 
     // Get the correct coordinates for this node
-    const dragData = draggedData as DraggedTaskData;
+    const dragData = draggedTask as DraggedData;
     const { x, y } = convertCoordinatesDOMtoSVG(
       d3.select('svg'),
       e.clientX - dragData.offset[0],
@@ -65,8 +64,8 @@ const SVGArea = ({ draggedData }: SVGArea) => {
 
     const newNode: TaskData = {
       id: (nodes.length + 1).toString(),
-      name: dragData.taskData.name,
-      color: dragData.taskData.color,
+      name: dragData.draggedData.name,
+      color: dragData.draggedData.color,
       x,
       y,
     };
@@ -78,7 +77,7 @@ const SVGArea = ({ draggedData }: SVGArea) => {
 
   return (
     <div
-      className='svgContainer'
+      className='m-1'
       onDrop={(e) => onDrop(e)}
       onDragLeave={() => onDragLeave()}
       onDragOver={(e) => onDragOver(e)}

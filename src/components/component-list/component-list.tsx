@@ -2,26 +2,19 @@ import React, { useState } from 'react';
 
 import { DraggableBlocks } from '@components/draggable-components';
 import Container from '@layouts/Container';
+import { useTaskContext } from '@pages/workflow-creator';
 
 interface ComponentList {
-  tasks: TaskData[];
-  addTask: () => void;
-  setSelectedTask: (dragData: TaskData) => void;
   setModalState: (open?: boolean) => void;
 }
 
-function ComponentList({
-  tasks,
-  addTask,
-  setSelectedTask: setSelectedTask,
-  setModalState,
-}: ComponentList) {
+function ComponentList({ setModalState }: ComponentList) {
   return (
     <div>
       <Container>
         <div className='flex h-24 flex-row justify-between'>
           <div className='max'>
-            <DraggableBlocks tasks={tasks} setDragData={setSelectedTask} />
+            <DraggableBlocks />
           </div>
           <button
             onClick={() => setModalState(true)}
