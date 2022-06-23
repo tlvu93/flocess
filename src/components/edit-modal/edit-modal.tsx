@@ -1,9 +1,7 @@
 import React from 'react';
 
 interface EditModal {
-  selectedTask: TaskData;
-  setModalState: (open: boolean) => void;
-  setSelectedTask: (dragData: TaskData) => void;
+  setModalState: (open?: boolean) => void;
 }
 
 function EditModal({ setModalState }: EditModal) {

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { DraggableBlocks } from '@components/draggable-components';
 import Container from '@layouts/Container';
-import { useTaskContext } from '@pages/workflow-creator';
 
 interface ComponentList {
   setModalState: (open?: boolean) => void;

@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
 import { useEffect, useState } from 'react';
-
-import { useTaskContext } from '@pages/workflow-creator';
+import { useTaskContext } from 'src/context/task-context';
 
 import SVGDrawer from './svg-drawer';
 

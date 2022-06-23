@@ -1,6 +1,4 @@
-import { DragEvent } from 'react';
-
-import { useTaskContext } from '@pages/workflow-creator';
+import { useTaskContext } from 'src/context/task-context';
 
 import Draggable from './draggable';
 

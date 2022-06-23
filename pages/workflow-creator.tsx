@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import TaskState from 'src/context/task-context';
 import { v4 as uuid } from 'uuid';
 
 import ComponentList from '@components/component-list/component-list';
@@ -20,22 +21,7 @@ type Props = {};
 const TaskContext = createContext<TaskContext | null>(null);
 
 function WorkflowCreator({}: Props) {
-  const [tasks, setTasks] = useState<TaskData[]>(DUMMY_TASK_COMPONENTS);
   const [showModal, setShowModal] = useState<boolean>(true);
-  const [selectedTask, setSelectedTask] = useState<TaskData>({} as TaskData);
-  const [draggedTask, setDraggedTask] = useState<DraggedData>(
-    {} as DraggedData
-  );
-
-  const addTask = () => {
-    let newTask = {
-      id: uuid(),
-      name: 'newTask',
-      color: 'red',
-    };
-
-    setTasks([...tasks, newTask]);
-  };
 
   const setModalState = (open?: boolean) => {
     if (open !== undefined) setShowModal(open);
@@ -46,24 +32,14 @@ function WorkflowCreator({}: Props) {
 
   return (
     <div className='App'>
-      <TaskContext.Provider
-        value={{
-          tasks: tasks,
-          addTask: addTask,
-          selectedTask: selectedTask,
-          setSelectedTask: setSelectedTask,
-          draggedTask: draggedTask,
-          setDraggedTask: setDraggedTask,
-        }}
-      >
+      <TaskState>
         <SVGArea />
 
         <ComponentList setModalState={setModalState} />
         {showModal && <EditModal setModalState={setModalState} />}
-      </TaskContext.Provider>
+      </TaskState>
     </div>
   );
 }
 
-export const useTaskContext = () => useContext(TaskContext);
 export default WorkflowCreator;

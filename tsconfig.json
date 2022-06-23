@@ -18,6 +18,7 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
+      "@context/*": ["src/context/*"],
       "@pages/*": ["pages/*"]
     }
   },
