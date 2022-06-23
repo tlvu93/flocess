@@ -1,43 +1,24 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { useState } from 'react';
+import ModalState from 'src/context/modal-context';
 import TaskState from 'src/context/task-context';
-import { v4 as uuid } from 'uuid';
 
 import ComponentList from '@components/component-list/component-list';
 import EditModal from '@components/edit-modal/edit-modal';
 import { SVGArea } from '@components/svg-area';
 
-const DUMMY_TASK_COMPONENTS = [
-  { id: uuid(), name: 'A', color: 'blue' },
-  { id: uuid(), name: 'B', color: 'pink' },
-  { id: uuid(), name: 'C', color: 'green' },
-  { id: uuid(), name: 'D', color: 'yellow' },
-  { id: uuid(), name: 'E', color: 'purple' },
-];
-
-const WORKFLOW = {};
-
-type Props = {};
-
-const TaskContext = createContext<TaskContext | null>(null);
-
-function WorkflowCreator({}: Props) {
-  const [showModal, setShowModal] = useState<boolean>(true);
-
-  const setModalState = (open?: boolean) => {
-    if (open !== undefined) setShowModal(open);
-    else {
-      setShowModal(!showModal);
-    }
-  };
-
+function WorkflowCreator() {
   return (
     <div className='App'>
-      <TaskState>
-        <SVGArea />
+      <ModalState>
+        <TaskState>
+          {/* SVG Area / Canvas where the nodes will be rendered */}
+          <SVGArea />
 
-        <ComponentList setModalState={setModalState} />
-        {showModal && <EditModal setModalState={setModalState} />}
-      </TaskState>
+          {/* Dashboard with Components, which are draggable */}
+          <ComponentList />
+          <EditModal />
+        </TaskState>
+      </ModalState>
     </div>
   );
 }

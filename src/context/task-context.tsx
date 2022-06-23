@@ -1,6 +1,15 @@
 import React, { createContext, useContext, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
+interface TaskContext {
+  tasks: TaskData[];
+  addTask: () => void;
+  selectedTask: TaskData;
+  setSelectedTask: (taskData: TaskData) => void;
+  draggedTask: DraggedData;
+  setDraggedTask: (draggedTaskData: DraggedData) => void;
+}
+
 const TaskContext = createContext<TaskContext>({} as TaskContext);
 export const useTaskContext = () => useContext(TaskContext);
 

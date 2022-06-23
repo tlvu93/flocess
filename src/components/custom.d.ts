@@ -15,12 +15,3 @@ type DraggedData = {
   draggedData: TaskData;
   offset: [number, number];
 };
-
-interface TaskContext {
-  tasks: TaskData[];
-  addTask: () => void;
-  selectedTask: TaskData;
-  setSelectedTask: (taskData: TaskData) => void;
-  draggedTask: DraggedData;
-  setDraggedTask: (draggedTaskData: DraggedData) => void;
-}

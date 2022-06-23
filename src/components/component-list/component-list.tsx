@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
+import { useModalContext } from 'src/context/modal-context';
 
 import { DraggableBlocks } from '@components/draggable-components';
 import Container from '@layouts/Container';
 
-interface ComponentList {
-  setModalState: (open?: boolean) => void;
-}
-
-function ComponentList({ setModalState }: ComponentList) {
+function ComponentList() {
+  const { openModal } = useModalContext();
   return (
     <div>
       <Container>
@@ -16,7 +14,7 @@ function ComponentList({ setModalState }: ComponentList) {
             <DraggableBlocks />
           </div>
           <button
-            onClick={() => setModalState(true)}
+            onClick={() => openModal()}
             className='rounded-xl bg-yellow-500 p-4 text-xl font-bold text-gray-800 hover:bg-yellow-600'
           >
             + New Task
