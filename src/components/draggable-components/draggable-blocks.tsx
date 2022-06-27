@@ -3,7 +3,7 @@ import { useTaskContext } from 'src/context/task-context';
 import Draggable from './draggable';
 
 const DraggableBlocks = () => {
-  const { tasks, setDraggedTask } = useTaskContext() as TaskContext;
+  const { tasks, setDraggedTask } = useTaskContext();
 
   const onDragStart = (draggedTaskData: DraggedData) => {
     setDraggedTask(draggedTaskData);

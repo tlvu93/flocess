@@ -24,7 +24,7 @@ const convertCoordinatesDOMtoSVG = (
 };
 
 const SVGArea = () => {
-  const { draggedTask } = useTaskContext() as TaskContext;
+  const { draggedTask } = useTaskContext();
   const [nodes, setNodes] = useState<TaskData[]>([]);
 
   useEffect(() => {
