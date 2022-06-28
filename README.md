@@ -16,6 +16,7 @@ For this project following process steps are being used:
 
 
 
+
 - low-fidelity Prototype (Wireframe) with Figma
 - style guide (Figma)
 - high-fidelity Prototyp with Figma
