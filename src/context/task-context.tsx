@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState } from 'react';
-import { v4 as uuid } from 'uuid';
+import React, { createContext, useContext, useState } from "react";
+import { v4 as uuid } from "uuid";
 
 interface TaskContext {
   tasks: TaskData[];
-  addTask: () => void;
+  addTask: (data: TaskData) => void;
   selectedTask: TaskData;
   setSelectedTask: (taskData: TaskData) => void;
   draggedTask: DraggedData;
@@ -14,11 +14,11 @@ const TaskContext = createContext<TaskContext>({} as TaskContext);
 export const useTaskContext = () => useContext(TaskContext);
 
 const DUMMY_TASK_COMPONENTS = [
-  { id: uuid(), name: 'A', color: 'blue' },
-  { id: uuid(), name: 'B', color: 'pink' },
-  { id: uuid(), name: 'C', color: 'green' },
-  { id: uuid(), name: 'D', color: 'yellow' },
-  { id: uuid(), name: 'E', color: 'purple' },
+  { id: uuid(), name: "A", color: "blue" },
+  { id: uuid(), name: "B", color: "pink" },
+  { id: uuid(), name: "C", color: "green" },
+  { id: uuid(), name: "D", color: "yellow" },
+  { id: uuid(), name: "E", color: "purple" },
 ];
 
 const TaskState = ({ children }: { children: React.ReactNode }) => {
@@ -28,14 +28,10 @@ const TaskState = ({ children }: { children: React.ReactNode }) => {
     {} as DraggedData
   );
 
-  const addTask = () => {
-    let newTask = {
-      id: uuid(),
-      name: 'newTask',
-      color: 'red',
-    };
+  const addTask = (data: TaskData) => {
+    data.id = uuid();
 
-    setTasks([...tasks, newTask]);
+    setTasks([...tasks, data]);
   };
 
   return (
