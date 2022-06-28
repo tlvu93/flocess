@@ -19,6 +19,16 @@ const DUMMY_TASK_COMPONENTS = [
   { id: uuid(), name: "C", color: "green" },
   { id: uuid(), name: "D", color: "yellow" },
   { id: uuid(), name: "E", color: "purple" },
+  { id: uuid(), name: "A", color: "blue" },
+  { id: uuid(), name: "B", color: "pink" },
+  { id: uuid(), name: "C", color: "green" },
+  { id: uuid(), name: "D", color: "yellow" },
+  { id: uuid(), name: "E", color: "purple" },
+  { id: uuid(), name: "A", color: "blue" },
+  { id: uuid(), name: "B", color: "pink" },
+  { id: uuid(), name: "C", color: "green" },
+  { id: uuid(), name: "D", color: "yellow" },
+  { id: uuid(), name: "E", color: "purple" },
 ];
 
 const TaskState = ({ children }: { children: React.ReactNode }) => {

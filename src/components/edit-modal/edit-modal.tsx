@@ -83,8 +83,6 @@ function EditModal() {
 "
                     id="exampleFormControlTextarea1"
                     rows={3}
-                    placeholder="Your content"
-                    defaultValue={""}
                     onChange={(e) => setContent(e.target.value)}
                     value={content}
                   />

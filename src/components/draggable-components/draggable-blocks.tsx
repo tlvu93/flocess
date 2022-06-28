@@ -1,8 +1,13 @@
-import { useTaskContext } from 'src/context/task-context';
+import { useTaskContext } from "src/context/task-context";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
-import Draggable from './draggable';
+import Draggable from "./draggable";
+import React, { useEffect, useRef, useState } from "react";
 
 const DraggableBlocks = () => {
+  const [touchStartY, setTouchStartY] = useState(0);
+  const [touchEndY, setTouchEndY] = useState(0);
   const { tasks, setDraggedTask } = useTaskContext();
 
   const onDragStart = (draggedTaskData: DraggedData) => {
@@ -10,24 +15,56 @@ const DraggableBlocks = () => {
   };
 
   const onDragEnd = () => {};
+  let scrollBarRef = useRef<HTMLDivElement>(null);
+
+  const handleOnWheel = (e: React.WheelEvent) => {
+    if (!scrollBarRef) return;
+    else {
+      scrollBarRef!.current!.scrollLeft += e.deltaY;
+    }
+  };
+
+  const recordTouchStart = (e: React.TouchEvent) => {
+    setTouchStartY(e.changedTouches[0].screenY);
+  };
+
+  const recordTouchEnd = (e: React.TouchEvent) => {
+    setTouchEndY(e.changedTouches[0].screenY);
+  };
+
+  useEffect(() => {
+    if (touchStartY && touchEndY) {
+      scrollBarRef.current!.scrollLeft += touchEndY - touchStartY;
+      setTouchStartY(0);
+      setTouchEndY(0);
+    }
+  }, [touchStartY, touchEndY]);
 
   return (
-    <div className='flex gap-x-4'>
-      {tasks.map((task) => (
-        <Draggable
-          key={task.name}
-          data={task}
-          onDragStart={(dragData) => onDragStart(dragData)}
-          onDragEnd={() => onDragEnd()}
-        >
-          <div
-            className='draggable-block'
-            style={{ backgroundColor: task.color }}
+    <div
+      ref={scrollBarRef}
+      className="h-28 max-w-3xl overflow-x-scroll"
+      onWheel={handleOnWheel}
+      onTouchStart={recordTouchStart}
+      onTouchEnd={recordTouchEnd}
+    >
+      <div className="flex gap-x-4">
+        {tasks.map((task) => (
+          <Draggable
+            key={task.id}
+            data={task}
+            onDragStart={(dragData) => onDragStart(dragData)}
+            onDragEnd={() => onDragEnd()}
           >
-            {task.name}
-          </div>
-        </Draggable>
-      ))}
+            <div
+              className="draggable-block"
+              style={{ backgroundColor: task.color }}
+            >
+              {task.name}
+            </div>
+          </Draggable>
+        ))}
+      </div>
     </div>
   );
 };
