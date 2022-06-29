@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import { useEffect, useState } from 'react';
 import { useTaskContext } from 'src/context/task-context';
+import { v4 as uuid } from 'uuid';
 
 import SVGDrawer from './svg-drawer';
 
@@ -25,10 +26,27 @@ const convertCoordinatesDOMtoSVG = (
 
 const SVGArea = () => {
   const { draggedTask } = useTaskContext();
-  const [nodes, setNodes] = useState<TaskData[]>([]);
+  const [nodes, setNodes] = useState<NodeData[]>([]);
+
+  /* 
+    1. eventHandler to detect drag and drop of the svg
+    2. onSave -> save the position to the nodes state
+      -  this will cause and redraw
+
+  */
+
+  const setNode = (n: NodeData) => {
+    const tmpNodes = nodes.map<NodeData>((node) => {
+      if (node.id === n.id) node = n;
+      return node;
+    });
+    console.log(nodes);
+    console.log(tmpNodes);
+    setNodes(tmpNodes);
+  };
 
   useEffect(() => {
-    SVGDrawer.draw(nodes);
+    SVGDrawer.draw(nodes, setNode);
   }, [nodes]);
 
   const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -61,8 +79,9 @@ const SVGArea = () => {
 
     // Add the node to the list of nodes.
 
-    const newNode: TaskData = {
-      id: (nodes.length + 1).toString(),
+    const newNode: NodeData = {
+      id: uuid(),
+      parentId: dragData.draggedData.id,
       name: dragData.draggedData.name,
       color: dragData.draggedData.color,
       x,

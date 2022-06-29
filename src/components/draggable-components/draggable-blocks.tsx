@@ -1,9 +1,7 @@
-import { useTaskContext } from "src/context/task-context";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import "react-perfect-scrollbar/dist/css/styles.css";
+import React, { useEffect, useRef, useState } from 'react';
+import { useTaskContext } from 'src/context/task-context';
 
-import Draggable from "./draggable";
-import React, { useEffect, useRef, useState } from "react";
+import Draggable from './draggable';
 
 const DraggableBlocks = () => {
   const [touchStartY, setTouchStartY] = useState(0);
@@ -43,12 +41,12 @@ const DraggableBlocks = () => {
   return (
     <div
       ref={scrollBarRef}
-      className="h-28 max-w-3xl overflow-x-auto"
+      className='h-28 max-w-3xl overflow-x-auto'
       onWheel={handleOnWheel}
       onTouchStart={recordTouchStart}
       onTouchEnd={recordTouchEnd}
     >
-      <div className="flex gap-x-4">
+      <div className='flex gap-x-4'>
         {tasks.map((task) => (
           <Draggable
             key={task.id}
@@ -58,7 +56,7 @@ const DraggableBlocks = () => {
           >
             <div
               // className="h-20 w-20 bg-[url('/puzzle-main.svg')] bg-cover"
-              className="flex h-20 w-20 items-center justify-center text-center"
+              className='flex h-20 w-20 items-center justify-center text-center'
               style={{ backgroundColor: task.color }}
             >
               {task.name}

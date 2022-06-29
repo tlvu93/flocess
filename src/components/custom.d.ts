@@ -5,6 +5,13 @@ declare module '*.svg' {
 
 interface TaskData {
   id: string;
+  name: string;
+  color: Color;
+}
+
+interface NodeData {
+  id: string;
+  parentId: string;
   x?: number;
   y?: number;
   name: string;
