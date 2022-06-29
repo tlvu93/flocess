@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ModalType, useModalContext } from "src/context/modal-context";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { useTaskContext } from "@context/task-context";
@@ -9,7 +9,7 @@ function EditModal() {
   const [resources, setResources] = useState("");
   const [color, setColor] = useState("#aabbcc");
 
-  const { addTask } = useTaskContext();
+  const { addTask, selectedTask } = useTaskContext();
   const { showEditModal, closeModal } = useModalContext();
 
   const clearData = () => {
@@ -30,6 +30,12 @@ function EditModal() {
     clearData();
     closeModal(ModalType.EditTask);
   };
+
+  useEffect(() => {
+    if (Object.keys(selectedTask).length === 0) return;
+    setTitle(selectedTask.name);
+    setColor(selectedTask.color);
+  }, [selectedTask]);
 
   return (
     <>

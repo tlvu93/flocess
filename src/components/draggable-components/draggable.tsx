@@ -1,3 +1,4 @@
+import { ModalType, useModalContext } from "@context/modal-context";
 import { useTaskContext } from "@context/task-context";
 import { ReactNode } from "react";
 
@@ -10,6 +11,7 @@ interface Draggable {
 
 const Draggable = ({ children, data, onDragStart, onDragEnd }: Draggable) => {
   const { setSelectedTask } = useTaskContext();
+  const { openModal } = useModalContext();
 
   const onDragStarting = (e: React.DragEvent<HTMLDivElement>) => {
     // Get the block coordinates
@@ -37,6 +39,7 @@ const Draggable = ({ children, data, onDragStart, onDragEnd }: Draggable) => {
   const onClicking = (e: React.DragEvent<HTMLDivElement>) => {
     console.log("Clicked", data);
     setSelectedTask(data);
+    openModal(ModalType.EditTask);
   };
 
   return (

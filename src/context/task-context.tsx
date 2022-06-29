@@ -14,21 +14,10 @@ const TaskContext = createContext<TaskContext>({} as TaskContext);
 export const useTaskContext = () => useContext(TaskContext);
 
 const DUMMY_TASK_COMPONENTS = [
-  { id: uuid(), name: "A", color: "blue" },
-  { id: uuid(), name: "B", color: "pink" },
-  { id: uuid(), name: "C", color: "green" },
-  { id: uuid(), name: "D", color: "yellow" },
-  { id: uuid(), name: "E", color: "purple" },
-  { id: uuid(), name: "A", color: "blue" },
-  { id: uuid(), name: "B", color: "pink" },
-  { id: uuid(), name: "C", color: "green" },
-  { id: uuid(), name: "D", color: "yellow" },
-  { id: uuid(), name: "E", color: "purple" },
-  { id: uuid(), name: "A", color: "blue" },
-  { id: uuid(), name: "B", color: "pink" },
-  { id: uuid(), name: "C", color: "green" },
-  { id: uuid(), name: "D", color: "yellow" },
-  { id: uuid(), name: "E", color: "purple" },
+  { id: uuid(), name: "A", color: "#27598a" },
+  { id: uuid(), name: "B", color: "#b62df7" },
+  { id: uuid(), name: "C", color: "#00f702" },
+  { id: uuid(), name: "D", color: "#33383d" },
 ];
 
 const TaskState = ({ children }: { children: React.ReactNode }) => {
