@@ -17,7 +17,7 @@ function ComponentList() {
             onClick={() => openModal(ModalType.AddTask)}
             className="rounded-xl bg-yellow-500 p-4 text-xl font-bold text-gray-800 hover:bg-yellow-600"
           >
-            + New Task
+            <p className="select-none">+ New Task</p>
           </button>
         </div>
       </Container>

@@ -17,8 +17,8 @@ const ModalContext = createContext<ModalContext>({} as ModalContext);
 export const useModalContext = () => useContext(ModalContext);
 
 const ModalState = ({ children }: React.PropsWithChildren) => {
-  const [showAddModal, setShowAddModal] = useState<boolean>(true);
-  const [showEditModal, setShowEditModal] = useState<boolean>(true);
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   const openModal = (type: ModalType) => {
     switch (type) {

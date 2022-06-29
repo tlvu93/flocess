@@ -19,7 +19,8 @@ export default class SVGDrawer {
             (node) => "translate(" + node.x + "," + node.y + ")"
           )
           .on("click", (_, node) => {
-            console.log(`Clicked on ${node.name}`);
+            console.log(`Clicked on ${node.name} with following data: `);
+            console.dir(node);
           });
 
         // Append the square
