@@ -43,7 +43,7 @@ const DraggableBlocks = () => {
   return (
     <div
       ref={scrollBarRef}
-      className="h-28 max-w-3xl overflow-x-scroll"
+      className="h-28 max-w-3xl overflow-x-auto"
       onWheel={handleOnWheel}
       onTouchStart={recordTouchStart}
       onTouchEnd={recordTouchEnd}
@@ -57,7 +57,8 @@ const DraggableBlocks = () => {
             onDragEnd={() => onDragEnd()}
           >
             <div
-              className="draggable-block"
+              // className="h-20 w-20 bg-[url('/puzzle-main.svg')] bg-cover"
+              className="flex h-20 w-20 items-center justify-center text-center"
               style={{ backgroundColor: task.color }}
             >
               {task.name}

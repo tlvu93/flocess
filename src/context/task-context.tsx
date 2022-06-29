@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 interface TaskContext {
   tasks: TaskData[];
   addTask: (data: TaskData) => void;
+  findTaskById: (taskId: string) => TaskData | undefined;
   selectedTask: TaskData;
   setSelectedTask: (taskData: TaskData) => void;
   draggedTask: DraggedData;
@@ -14,10 +15,10 @@ const TaskContext = createContext<TaskContext>({} as TaskContext);
 export const useTaskContext = () => useContext(TaskContext);
 
 const DUMMY_TASK_COMPONENTS = [
-  { id: uuid(), name: "A", color: "#27598a" },
-  { id: uuid(), name: "B", color: "#b62df7" },
-  { id: uuid(), name: "C", color: "#00f702" },
-  { id: uuid(), name: "D", color: "#33383d" },
+  { id: uuid(), orginID: null, name: "A", color: "#27598a" },
+  { id: uuid(), name: "Drink Water", color: "#b62df7" },
+  { id: uuid(), name: "Practice Music", color: "#00f702" },
+  { id: uuid(), name: "Learn HTML", color: "#33383d" },
 ];
 
 const TaskState = ({ children }: { children: React.ReactNode }) => {
@@ -33,11 +34,16 @@ const TaskState = ({ children }: { children: React.ReactNode }) => {
     setTasks([...tasks, data]);
   };
 
+  const findTaskById = (taskId: string) => {
+    return tasks.find((task) => task.id === taskId);
+  };
+
   return (
     <TaskContext.Provider
       value={{
         tasks,
         addTask,
+        findTaskById,
         selectedTask,
         setSelectedTask,
         draggedTask,
