@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { useModalContext } from "src/context/modal-context";
+import { ModalType, useModalContext } from "src/context/modal-context";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { useTaskContext } from "@context/task-context";
 
-function EditModal() {
+function AddModal() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [resources, setResources] = useState("");
   const [color, setColor] = useState("#aabbcc");
 
   const { addTask } = useTaskContext();
-  const { showModal, closeModal } = useModalContext();
+  const { showAddModal, closeModal } = useModalContext();
 
   const clearData = () => {
     setTitle("");
@@ -28,12 +28,12 @@ function EditModal() {
 
     addTask(data);
     clearData();
-    closeModal();
+    closeModal(ModalType.AddTask);
   };
 
   return (
     <>
-      {showModal ? (
+      {showAddModal ? (
         <>
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none">
             <div className="relative my-6 mx-auto max-w-3xl flex-1">
@@ -44,7 +44,7 @@ function EditModal() {
                   <h3 className="text-3xl font-semibold">Add new Task</h3>
                   <button
                     className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-black opacity-50 outline-none focus:outline-none"
-                    onClick={() => closeModal()}
+                    onClick={() => closeModal(ModalType.AddTask)}
                   >
                     <span className="block h-6 w-6 bg-transparent text-2xl text-black opacity-50 outline-none focus:outline-none">
                       ×
@@ -114,7 +114,7 @@ function EditModal() {
                   <button
                     className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                     type="button"
-                    onClick={() => closeModal()}
+                    onClick={() => closeModal(ModalType.AddTask)}
                   >
                     Close
                   </button>
@@ -138,4 +138,4 @@ function EditModal() {
   );
 }
 
-export default EditModal;
+export default AddModal;
