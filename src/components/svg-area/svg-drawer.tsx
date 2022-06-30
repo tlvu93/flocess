@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+import { useEffect } from 'react';
 
 /* CONSTANTS */
 const PUZZLE_START_SVG =
@@ -9,87 +10,120 @@ const PUZZLE_MAIN_SVG =
 
 const PUZZLE_DIMENSION = 100;
 const SCALE_VALUE = 1.5; // puzzle dimension 100 x 100 px
+
+function onDrag(ev: DragEvent, data: NodeData) {
+  d3.select(this)
+    .attr('x', ev.x)
+    .attr('y', ev.y)
+    .attr(
+      'transform',
+      `scale(${SCALE_VALUE}) translate(${(data.x! = ev.x)},${(data.y! = ev.y)})`
+    );
+}
+
+function onDragEnd(ev: any, data: any, setNode: Function) {
+  //console.log('OnDragEnd', data);
+  setNode(data);
+}
+
 /**
  * Draw the nodes.
  * Each time this is called we only draw the added nodes since we are using "enter" only
  */
 
-function onDrag(ev, data) {
-  d3.select(this)
-    .attr('x', ev.x)
-    .attr('y', ev.y)
-    .attr('transform', `translate(${(data.x! = ev.x)},${(data.y! = ev.y)})`);
-}
+const draw = (nodes: NodeData[], setNode: Function) => {
+  const dragHandler = d3
+    .drag()
+    .on('drag', onDrag)
+    .on('end', (ev, data) => onDragEnd(ev, data, setNode));
 
-function onDragEnd(ev, data) {
-  console.log('OnDragEnd', data);
-  // d3.select(this)
-  //   .attr('x', ev.x)
-  //   .attr('y', ev.y)
-  //   .attr('transform', `translate(${(data.x! = ev.x)},${(data.y! = ev.y)})`);
-}
+  const allSelectedNodes = d3
+    .select('svg')
+    .selectAll<SVGSVGElement, NodeData>('.node');
 
-export default class SVGDrawer {
-  static dragHandler = d3.drag().on('drag', onDrag).on('end', onDragEnd);
+  allSelectedNodes
+    .data(nodes, (node) => node.id)
+    .join((enter) => {
+      // Draw a group node that will contain the squre and the text
+      const node = enter
+        .append('g')
+        .attr('class', 'node')
+        .attr(
+          'transform-origin',
+          (node) => `${node.x! + 50}px ${node.y! + 30}px`
+        )
+        .attr(
+          'transform',
+          (node) => `scale(0.7) translate(${node.x} ,${node.y})`
+        )
+        .call((enter) =>
+          enter
+            .transition()
+            .duration(100)
+            .attr(
+              'transform',
+              (node) => `scale(${SCALE_VALUE}) translate(${node.x} ,${node.y})`
+            )
+        )
+        .on('click', (e) => {
+          console.log('Clicked!');
+          // OpenModal with id
+        });
 
-  static draw(nodes: NodeData[], setNode: Function) {
-    d3.select('svg')
-      .selectAll<SVGSVGElement, NodeData>('.node')
-      .data(nodes, (node) => node.id)
-      .join((enter) => {
-        // Draw a group node that will contain the squre and the text
-        const node = enter
-          .append('g')
-          .attr('class', 'node')
-          .attr(
-            'transform-origin',
-            (node) => `${node.x! + 50}px ${node.y! + 30}px`
-          )
+      node
+        .append('path')
+        .attr('d', PUZZLE_MAIN_SVG)
+        .attr('width', 10)
+        .attr('height', 10)
+        .attr('fill', (node) => node.color);
 
-          .attr('transform', (node) => `translate(${node.x} ,${node.y})`)
-          .attr(
-            'transform',
-            (node) => `scale(0.7) translate(${node.x} ,${node.y})`
-          )
+      // Append the text
+      node
+        .append('text')
+        .attr('x', (PUZZLE_DIMENSION * SCALE_VALUE) / 2)
+        .attr('y', (PUZZLE_DIMENSION * SCALE_VALUE) / 2)
+        .attr('width', 10)
+        .attr('dominant-baseline', 'middle')
+        .attr('text-anchor', 'middle')
+        .attr('class', 'select-none')
+        .text((node) => node.name);
 
-          .call((enter) =>
-            enter
-              .transition()
-              .duration(100)
-              .attr(
-                'transform',
-                (node) => `scale(1.0) translate(${node.x} ,${node.y})`
-              )
-          );
+      return node;
+    });
 
-        node
-          .append('path')
-          .attr('d', PUZZLE_MAIN_SVG)
-          .attr('width', 10)
-          .attr('height', 10)
-          .attr('fill', (node) => node.color);
+  dragHandler(d3.select('svg').selectAll<SVGSVGElement, NodeData>('.node'));
+};
 
-        // Append the text
-        node
-          .append('text')
-          .attr('x', (PUZZLE_DIMENSION * SCALE_VALUE) / 2)
-          .attr('y', (PUZZLE_DIMENSION * SCALE_VALUE) / 2)
-          .attr('width', 10)
-          .attr('dominant-baseline', 'middle')
-          .attr('text-anchor', 'middle')
-          .attr('class', 'select-none')
-          .text((node) => node.name);
+const SVGDrawer = {
+  draw,
+};
 
-        return node;
-      });
+export default SVGDrawer;
 
-    // d3.drag().on('drag', function (e) {
-    //   //console.log(e.x);
-    //   d3.select(this).attr('x', e.x).attr('y', e.y);
-    // });
+//   const SVGDrawer = ({ nodes, setNode }: SVGDrawer) => {
+//     const onDrag = (ev, data) => {
+//       d3.select(this)
+//         .attr('x', ev.x)
+//         .attr('y', ev.y)
+//         .attr(
+//           'transform',
+//           `translate(${(data.x! = ev.x)},${(data.y! = ev.y)})`
+//         );
+//     };
 
-    this.dragHandler(
-      d3.select('svg').selectAll<SVGSVGElement, NodeData>('.node')
-    );
-  }
-}
+//     const onDragEnd = (ev, data) => {
+//       console.log('OnDragEnd', data);
+//       // d3.select(this)
+//       //   .attr('x', ev.x)
+//       //   .attr('y', ev.y)
+//       //   .attr('transform', `translate(${(data.x! = ev.x)},${(data.y! = ev.y)})`);
+//     };
+//   };
+
+//   useEffect(() => {
+//     console.log('test');
+//     draw();
+//   }, [nodes]);
+// };
+
+// export default SVGDrawer;

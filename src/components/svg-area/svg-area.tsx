@@ -9,6 +9,16 @@ import SVGDrawer from './svg-drawer';
  * Convert DOM coordinates to SVG coordinates based on SVG offset and zoom level
  */
 
+const fetchItems = () => {
+  let parsedNodes = localStorage.getItem('nodes');
+
+  if (!parsedNodes) {
+    return [];
+  } else {
+    return JSON.parse(parsedNodes!);
+  }
+};
+
 const convertCoordinatesDOMtoSVG = (
   svg: d3.Selection<d3.BaseType, unknown, HTMLElement, any>,
   x: number,
@@ -27,6 +37,22 @@ const convertCoordinatesDOMtoSVG = (
 const SVGArea = () => {
   const { draggedTask } = useTaskContext();
   const [nodes, setNodes] = useState<NodeData[]>([]);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    const fetchedNodes = fetchItems();
+    setNodes(fetchedNodes);
+    setSaving(true);
+  }, []);
+
+  useEffect(() => {
+    if (!saving) {
+      console.log('Not saving');
+      return;
+    }
+    // if (!saving) return;
+    localStorage.setItem('nodes', JSON.stringify(nodes));
+  }, [nodes, saving]);
 
   /* 
     1. eventHandler to detect drag and drop of the svg
@@ -40,8 +66,7 @@ const SVGArea = () => {
       if (node.id === n.id) node = n;
       return node;
     });
-    console.log(nodes);
-    console.log(tmpNodes);
+
     setNodes(tmpNodes);
   };
 
@@ -100,7 +125,7 @@ const SVGArea = () => {
       onDragLeave={() => onDragLeave()}
       onDragOver={(e) => onDragOver(e)}
     >
-      <svg className='h-96 w-full'> </svg>
+      <svg className='h-96 w-full'></svg>
     </div>
   );
 };
