@@ -7,15 +7,20 @@ interface TaskData {
   id: string;
   name: string;
   color: Color;
+  content: string;
+  resources: string[];
 }
 
 interface NodeData {
   id: string;
-  parentId: string;
-  x?: number;
-  y?: number;
-  name: string;
-  color: Color;
+  originTask: TaskData
+  coordinates?: {
+    x: number;
+    y: number;
+  }
+
+
+  completed: boolean;
 }
 
 type DraggedData = {
