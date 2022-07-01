@@ -123,13 +123,6 @@ function EditModal() {
                     />
                   </div>
                 </div>
-                <button
-                  className="mr-1 mb-1 rounded bg-emerald-600 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
-                  type="button"
-                  onClick={() => onAddTaskClick()}
-                >
-                  Mark as completed
-                </button>
                 {/*footer*/}
                 <div className="flex items-center justify-end rounded-b border-t border-solid border-slate-200 p-6">
                   <button

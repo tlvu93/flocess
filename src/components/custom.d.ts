@@ -8,7 +8,7 @@ interface Task {
   name: string;
   color: Color;
   content?: string;
-  resources?: string[];
+  resources?: string;
 }
 
 interface SVGTaskNode {
