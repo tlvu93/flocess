@@ -4,46 +4,37 @@ import { HexColorInput, HexColorPicker } from "react-colorful";
 import { useTaskContext } from "@context/task-context";
 
 function EditModal() {
-  const [title, setTitle] = useState("");
+  const [name, setName] = useState("");
   const [content, setContent] = useState("");
   const [resources, setResources] = useState("");
   const [color, setColor] = useState("#aabbcc");
 
-  const { addTask, selectedTask, updateTask } = useTaskContext();
+  const { selectedTask, updateTask } = useTaskContext();
   const {
     modals: { showEditTaskModal },
     closeModal,
   } = useModalContext();
 
-  const clearData = () => {
-    setTitle("");
-    setContent("");
-    setResources("");
-    setColor("#aabbcc");
-  };
-
-  const markAsComplete = () => {
-    updateTask;
-  };
-
-  const onAddTaskClick = () => {
-    const data: Task = {
-      id: "0",
-      name: title,
-      color: color,
-    };
-
-    addTask(data);
-    clearData();
-    closeModal(ModalType.EditTask);
-  };
-
   useEffect(() => {
     if (Object.keys(selectedTask).length === 0) return;
-    setTitle(selectedTask.name);
+    setName(selectedTask.name);
     setColor(selectedTask.color);
+
+    // Optionals, could be null
+    if (selectedTask.content) setContent(selectedTask.content);
+    if (selectedTask.resources) setResources(selectedTask.resources);
   }, [selectedTask]);
 
+  const onSaveButtonClick = () => {
+    let updatedTask = selectedTask;
+    updatedTask.name = name;
+    updatedTask.content = content;
+    updatedTask.resources = resources;
+    updatedTask.color = color;
+
+    updateTask(updatedTask);
+    closeModal(ModalType.EditTask);
+  };
   return (
     <>
       {showEditTaskModal ? (
@@ -73,8 +64,8 @@ function EditModal() {
                     id="Title"
                     type="text"
                     placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                   <h4 className="text-2xl font-semibold">Content</h4>
                   <textarea
@@ -135,7 +126,7 @@ function EditModal() {
                   <button
                     className="mr-1 mb-1 rounded bg-slate-700 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
                     type="button"
-                    onClick={() => onAddTaskClick()}
+                    onClick={() => onSaveButtonClick()}
                   >
                     Save
                   </button>
