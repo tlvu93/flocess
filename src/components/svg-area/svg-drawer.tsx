@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { useEffect } from "react";
 
 /* CONSTANTS */
 const PUZZLE_START_SVG =
@@ -11,19 +10,22 @@ const PUZZLE_MAIN_SVG =
 const PUZZLE_DIMENSION = 100;
 const SCALE_VALUE = 1.0; // puzzle dimension 100 x 100 px
 
-function onDrag(this: any, ev: DragEvent, data: SVGTaskNode) {
+function onDrag(this: Element, event: any, d: unknown) {
+  let data = d as SVGTaskNode;
+  console.log(data.coordinates);
+  console.log(console.log(event.x, event.y));
   d3.select(this)
-    .attr("x", ev.x)
-    .attr("y", ev.y)
+    .attr("x", event.x)
+    .attr("y", event.y)
     .attr(
       "transform",
-      `scale(${SCALE_VALUE}) translate(${(data.coordinates!.x =
-        ev.x)},${(data.coordinates!.y! = ev.y)})`
+      `translate(${(data.coordinates!.x = event.x)},${(data.coordinates!.y =
+        event.y)})`
     );
 }
 
-function onDragEnd(ev: any, data: any, setNode: Function) {
-  setNode(data);
+function onDragEnd(_ev: any, data: any, setNode: Function) {
+  setNode(data as SVGTaskNode);
 }
 
 /**
@@ -53,11 +55,11 @@ const draw = (
       const node = enter
         .append("g")
         .attr("class", "node")
-        .attr(
-          "transform-origin",
-          (node) =>
-            `${node.coordinates!.x + 50}px ${node.coordinates!.y + 30}px`
-        )
+        // .attr(
+        //   "transform-origin",
+        //   (node) =>
+        //     `${node.coordinates!.x + 50}px ${node.coordinates!.y + 30}px`
+        // )
         .attr(
           "transform",
           (node) =>
@@ -105,7 +107,13 @@ const draw = (
       return node;
     });
 
-  dragHandler(d3.select("svg").selectAll<SVGSVGElement, SVGTaskNode>(".node"));
+  const allNodes = d3.select("svg").selectAll(".node") as d3.Selection<
+    Element,
+    unknown,
+    any,
+    any
+  >;
+  dragHandler(allNodes);
 };
 
 const SVGDrawer = {
