@@ -11,7 +11,7 @@ const PUZZLE_MAIN_SVG =
 const PUZZLE_DIMENSION = 100;
 const SCALE_VALUE = 1.5; // puzzle dimension 100 x 100 px
 
-function onDrag(this: any, ev: DragEvent, data: NodeData) {
+function onDrag(this: any, ev: DragEvent, data: SVGTaskNode) {
   d3.select(this)
     .attr("x", ev.x)
     .attr("y", ev.y)
@@ -31,7 +31,12 @@ function onDragEnd(ev: any, data: any, setNode: Function) {
  * Each time this is called we only draw the added nodes since we are using "enter" only
  */
 
-const draw = (nodes: NodeData[], setNode: Function) => {
+const draw = (
+  svgNodes: SVGTaskNode[],
+  setNode: Function,
+  setSelectedTaskNode: Function,
+  openEditModal: Function
+) => {
   const dragHandler = d3
     .drag()
     .on("drag", onDrag)
@@ -39,10 +44,10 @@ const draw = (nodes: NodeData[], setNode: Function) => {
 
   const allSelectedNodes = d3
     .select("svg")
-    .selectAll<SVGSVGElement, NodeData>(".node");
+    .selectAll<SVGSVGElement, SVGTaskNode>(".node");
 
   allSelectedNodes
-    .data(nodes, (node) => node.id)
+    .data(svgNodes, (node) => node.id)
     .join((enter) => {
       // Draw a group node that will contain the squre and the text
       const node = enter
@@ -72,9 +77,10 @@ const draw = (nodes: NodeData[], setNode: Function) => {
                 })`
             )
         )
-        .on("click", (e) => {
-          console.log("Clicked!");
-          // OpenModal with id
+        .on("click", (e, data) => {
+          console.log("Clicked");
+          setSelectedTaskNode(data);
+          openEditModal();
         });
 
       // Append the PuzzlePath to the group
@@ -99,7 +105,7 @@ const draw = (nodes: NodeData[], setNode: Function) => {
       return node;
     });
 
-  dragHandler(d3.select("svg").selectAll<SVGSVGElement, NodeData>(".node"));
+  dragHandler(d3.select("svg").selectAll<SVGSVGElement, SVGTaskNode>(".node"));
 };
 
 const SVGDrawer = {

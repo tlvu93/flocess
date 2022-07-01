@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 interface Draggable {
   children?: ReactNode;
-  data: TaskData;
+  data: Task;
   onDragStart: { (dragData: DraggedData): void };
   onDragEnd: Function;
 }

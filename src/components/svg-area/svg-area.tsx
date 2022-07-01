@@ -1,3 +1,5 @@
+import { ModalType, useModalContext } from "@context/modal-context";
+import { useWorkflowContext } from "@context/workflow-context";
 import * as d3 from "d3";
 import { useEffect, useState } from "react";
 import { useTaskContext } from "src/context/task-context";
@@ -9,42 +11,48 @@ import SVGDrawer from "./svg-drawer";
 
 const SVGArea = () => {
   const { draggedTask } = useTaskContext();
-  const [nodes, setNodes] = useState<NodeData[]>([]);
+  const { setSelectedTaskNode } = useWorkflowContext();
+  const { openModal, closeModal } = useModalContext();
+
+  const [svgNode, setSvgNodes] = useState<SVGTaskNode[]>([]);
   const [saving, setSaving] = useState(false);
 
+  const openEditModal = () => {
+    openModal(ModalType.EditTaskNode);
+  };
+
+  const closeEditModal = () => {
+    closeModal(ModalType.EditTaskNode);
+  };
+
+  // Loads the Nodes on start
   useEffect(() => {
-    const fetchedNodes = fetchItems();
-    setNodes(fetchedNodes);
+    setSvgNodes(fetchItems());
     setSaving(true);
   }, []);
 
+  // Saves the nodes onChange
   useEffect(() => {
-    if (!saving) {
-      return;
-    }
+    if (!saving) return;
 
-    localStorage.setItem("nodes", JSON.stringify(nodes));
-  }, [nodes, saving]);
+    localStorage.setItem("nodes", JSON.stringify(svgNode));
+  }, [svgNode, saving]);
 
-  /* 
-    1. eventHandler to detect drag and drop of the svg
-    2. onSave -> save the position to the nodes state
-      -  this will cause and redraw
-
-  */
-
-  const updateNode = (n: NodeData) => {
-    const tmpNodes = nodes.map<NodeData>((node) => {
-      if (node.id === n.id) node = n;
-      return node;
-    });
-
-    setNodes(tmpNodes);
-  };
-
+  // Draw the Nodes onChange
   useEffect(() => {
-    SVGDrawer.draw(nodes, updateNode);
-  }, [nodes]);
+    const updateNode = (n: SVGTaskNode) => {
+      const tmpNodes = svgNode.map<SVGTaskNode>((node) => {
+        if (node.id === n.id) node = n;
+        return node;
+      });
+
+      setSvgNodes(tmpNodes);
+    };
+    SVGDrawer.draw(svgNode, updateNode, setSelectedTaskNode, openEditModal);
+  }, [svgNode]);
+
+  // Drag Handlers
+  // =================================================================
 
   const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -75,15 +83,14 @@ const SVGArea = () => {
     );
 
     // Add the node to the list of nodes.
-
-    const newNode: NodeData = {
+    const newNode: SVGTaskNode = {
       id: uuid(),
       originTask: dragData.draggedData,
       coordinates: { x: x, y: y },
       completed: false,
     };
 
-    setNodes([...nodes, newNode]);
+    setSvgNodes([...svgNode, newNode]);
 
     return false;
   };

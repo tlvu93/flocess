@@ -10,7 +10,10 @@ function AddModal() {
   const [color, setColor] = useState("#aabbcc");
 
   const { addTask } = useTaskContext();
-  const { showAddModal, closeModal } = useModalContext();
+  const {
+    modals: { showAddTaskModal },
+    closeModal,
+  } = useModalContext();
 
   const clearData = () => {
     setTitle("");
@@ -20,7 +23,7 @@ function AddModal() {
   };
 
   const onAddTaskClick = () => {
-    const data: TaskData = {
+    const data: Task = {
       id: "0",
       name: title,
       color: color,
@@ -33,7 +36,7 @@ function AddModal() {
 
   return (
     <>
-      {showAddModal ? (
+      {showAddTaskModal ? (
         <>
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none">
             <div className="relative my-6 mx-auto max-w-3xl flex-1">

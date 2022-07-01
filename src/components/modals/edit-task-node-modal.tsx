@@ -3,14 +3,17 @@ import { ModalType, useModalContext } from "src/context/modal-context";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { useTaskContext } from "@context/task-context";
 
-function EditModal() {
+function EditTaskNodeModal() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [resources, setResources] = useState("");
   const [color, setColor] = useState("#aabbcc");
 
-  const { addTask, selectedTask } = useTaskContext();
-  const { showEditModal, closeModal } = useModalContext();
+  const { addTask, selectedTask, updateTask } = useTaskContext();
+  const {
+    modals: { showEditTaskNodeModal },
+    closeModal,
+  } = useModalContext();
 
   const clearData = () => {
     setTitle("");
@@ -19,8 +22,12 @@ function EditModal() {
     setColor("#aabbcc");
   };
 
+  const markAsComplete = () => {
+    updateTask;
+  };
+
   const onAddTaskClick = () => {
-    const data: TaskData = {
+    const data: Task = {
       id: "0",
       name: title,
       color: color,
@@ -28,7 +35,7 @@ function EditModal() {
 
     addTask(data);
     clearData();
-    closeModal(ModalType.EditTask);
+    closeModal(ModalType.EditTaskNode);
   };
 
   useEffect(() => {
@@ -39,18 +46,19 @@ function EditModal() {
 
   return (
     <>
-      {showEditModal ? (
+      {showEditTaskNodeModal ? (
         <>
           <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto overflow-x-hidden outline-none focus:outline-none">
             <div className="relative my-6 mx-auto max-w-3xl flex-1">
               {/*content*/}
               <div className="relative flex w-full flex-col rounded-lg border-0 bg-white shadow-lg outline-none focus:outline-none">
                 {/*header*/}
+
                 <div className="flex items-start justify-between rounded-t border-b border-solid border-slate-200 p-5">
-                  <h3 className="text-3xl font-semibold">Edit Task</h3>
+                  <h3 className="text-3xl font-semibold">Edit TaskNode</h3>
                   <button
                     className="float-right ml-auto border-0 bg-transparent p-1 text-3xl font-semibold leading-none text-black opacity-50 outline-none focus:outline-none"
-                    onClick={() => closeModal(ModalType.EditTask)}
+                    onClick={() => closeModal(ModalType.EditTaskNode)}
                   >
                     <span className="block h-6 w-6 bg-transparent text-2xl text-black opacity-50 outline-none focus:outline-none">
                       ×
@@ -115,17 +123,24 @@ function EditModal() {
                     />
                   </div>
                 </div>
+                <button
+                  className="mr-1 mb-1 rounded bg-emerald-600 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                  type="button"
+                  onClick={() => onAddTaskClick()}
+                >
+                  Mark as completed
+                </button>
                 {/*footer*/}
                 <div className="flex items-center justify-end rounded-b border-t border-solid border-slate-200 p-6">
                   <button
                     className="background-transparent mr-1 mb-1 px-6 py-2 text-sm font-bold uppercase text-red-500 outline-none transition-all duration-150 ease-linear focus:outline-none"
                     type="button"
-                    onClick={() => closeModal(ModalType.EditTask)}
+                    onClick={() => closeModal(ModalType.EditTaskNode)}
                   >
                     Close
                   </button>
                   <button
-                    className="mr-1 mb-1 rounded bg-slate-800 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
+                    className="mr-1 mb-1 rounded bg-slate-700 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-emerald-600"
                     type="button"
                     onClick={() => onAddTaskClick()}
                   >
@@ -144,4 +159,4 @@ function EditModal() {
   );
 }
 
-export default EditModal;
+export default EditTaskNodeModal;

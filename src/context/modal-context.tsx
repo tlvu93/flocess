@@ -3,11 +3,16 @@ import React, { createContext, useContext, useState } from "react";
 export enum ModalType {
   AddTask = "AddTask",
   EditTask = "EditTask",
+  EditTaskNode = "EditTaskNode",
 }
 
 interface ModalContext {
-  showAddModal: boolean;
-  showEditModal: boolean;
+  modals: {
+    showAddTaskModal: boolean;
+    showEditTaskModal: boolean;
+    showEditTaskNodeModal: boolean;
+  };
+
   openModal: (type: ModalType) => void;
   closeModal: (type: ModalType) => void;
   toggleModal: (type: ModalType) => void;
@@ -17,47 +22,68 @@ const ModalContext = createContext<ModalContext>({} as ModalContext);
 export const useModalContext = () => useContext(ModalContext);
 
 const ModalState = ({ children }: React.PropsWithChildren) => {
-  const [showAddModal, setShowAddModal] = useState<boolean>(false);
-  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showAddTaskModal, setShowAddTaskModal] = useState<boolean>(false);
+  const [showEditTaskModal, setShowEditTaskModal] = useState<boolean>(false);
+  const [showEditTaskNodeModal, setShowEditTaskNodeModal] =
+    useState<boolean>(false);
 
   const openModal = (type: ModalType) => {
     switch (type) {
       case ModalType.AddTask:
-        setShowAddModal(true);
+        setShowAddTaskModal(true);
         break;
 
       case ModalType.EditTask:
-        setShowEditModal(true);
+        setShowEditTaskModal(true);
+        break;
+
+      case ModalType.EditTaskNode:
+        setShowEditTaskNodeModal(true);
+        break;
     }
   };
 
   const closeModal = (type: ModalType) => {
     switch (type) {
       case ModalType.AddTask:
-        setShowAddModal(false);
+        setShowAddTaskModal(false);
         break;
 
       case ModalType.EditTask:
-        setShowEditModal(false);
+        setShowEditTaskModal(false);
+        break;
+
+      case ModalType.EditTaskNode:
+        setShowEditTaskNodeModal(false);
+        break;
     }
   };
 
   const toggleModal = (type: ModalType) => {
     switch (type) {
       case ModalType.AddTask:
-        setShowAddModal(!showAddModal);
+        setShowAddTaskModal(!showAddTaskModal);
         break;
 
       case ModalType.EditTask:
-        setShowEditModal(!showEditModal);
+        setShowEditTaskModal(!showEditTaskModal);
+        break;
+
+      case ModalType.EditTaskNode:
+        setShowEditTaskNodeModal(!showEditTaskModal);
+        break;
     }
   };
 
   return (
     <ModalContext.Provider
       value={{
-        showAddModal,
-        showEditModal,
+        modals: {
+          showAddTaskModal,
+          showEditTaskModal,
+          showEditTaskNodeModal,
+        },
+
         openModal,
         closeModal,
         toggleModal,

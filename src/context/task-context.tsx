@@ -28,11 +28,14 @@ const DUMMY_TASK_COMPONENTS = [
 //================================================
 
 interface TaskContext {
-  tasks: TaskData[];
-  addTask: (data: TaskData) => void;
-  findTaskById: (taskId: string) => TaskData | undefined;
-  selectedTask: TaskData;
-  setSelectedTask: (taskData: TaskData) => void;
+  tasks: Task[];
+  addTask: (data: Task) => void;
+  updateTask: (data: Task) => void;
+  deleteTask: (id: string) => void;
+
+  selectedTask: Task;
+  setSelectedTask: (taskData: Task) => void;
+
   draggedTask: DraggedData;
   setDraggedTask: (draggedTaskData: DraggedData) => void;
 }
@@ -41,20 +44,29 @@ const TaskContext = createContext<TaskContext>({} as TaskContext);
 export const useTaskContext = () => useContext(TaskContext);
 
 const TaskState = ({ children }: { children: React.ReactNode }) => {
-  const [tasks, setTasks] = useState<TaskData[]>(DUMMY_TASK_COMPONENTS);
-  const [selectedTask, setSelectedTask] = useState<TaskData>({} as TaskData);
+  const [tasks, setTasks] = useState<Task[]>(DUMMY_TASK_COMPONENTS);
+  const [selectedTask, setSelectedTask] = useState<Task>({} as Task);
   const [draggedTask, setDraggedTask] = useState<DraggedData>(
     {} as DraggedData
   );
 
-  const addTask = (data: TaskData) => {
+  const addTask = (data: Task) => {
     data.id = uuid();
-
     setTasks([...tasks, data]);
   };
 
-  const findTaskById = (taskId: string) => {
-    return tasks.find((task) => task.id === taskId);
+  const updateTask = (data: Task) => {
+    const updatedTasks = tasks.map<Task>((node) => {
+      if (node.id === data.id) node = data;
+      return node;
+    });
+
+    setTasks(updatedTasks);
+  };
+
+  const deleteTask = (id: string) => {
+    const updatedTasks = tasks.filter((task) => task.id === id);
+    setTasks(updatedTasks);
   };
 
   return (
@@ -62,9 +74,12 @@ const TaskState = ({ children }: { children: React.ReactNode }) => {
       value={{
         tasks,
         addTask,
-        findTaskById,
+        updateTask,
+        deleteTask,
+
         selectedTask,
         setSelectedTask,
+
         draggedTask,
         setDraggedTask,
       }}

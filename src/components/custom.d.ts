@@ -3,27 +3,25 @@ declare module '*.svg' {
   export default content;
 }
 
-interface TaskData {
+interface Task {
   id: string;
   name: string;
   color: Color;
-  content: string;
-  resources: string[];
+  content?: string;
+  resources?: string[];
 }
 
-interface NodeData {
+interface SVGTaskNode {
   id: string;
-  originTask: TaskData
+  originTask: Task
   coordinates?: {
     x: number;
     y: number;
   }
-
-
   completed: boolean;
 }
 
 type DraggedData = {
-  draggedData: TaskData;
+  draggedData: Task;
   offset: [number, number];
 };
