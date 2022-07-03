@@ -1,4 +1,3 @@
-import { data } from 'cypress/types/jquery';
 import * as d3 from 'd3';
 
 /* CONSTANTS */
@@ -109,16 +108,19 @@ const draw = (
         .attr('fill', 'rgb(31, 41, 55)');
 
       //Append the text
-      node
+      const text = node
         .append('text')
         .attr('x', 75)
         .attr('y', 186)
-        .attr('width', 10)
         .attr('dominant-baseline', 'middle')
         .attr('text-anchor', 'middle')
         .attr('class', 'select-none font-bold')
         .attr('fill', 'white')
-        .text((node) => node.originTask.name);
+        .text((node) => {
+          let text = node.originTask.name;
+          if (text.length > 16) return text.slice(0, 16) + '...';
+          return text;
+        });
 
       return node;
     });
