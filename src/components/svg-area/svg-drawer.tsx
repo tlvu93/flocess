@@ -1,3 +1,4 @@
+import { data } from 'cypress/types/jquery';
 import * as d3 from 'd3';
 
 /* CONSTANTS */
@@ -11,25 +12,10 @@ const PUZZLE_DIMENSION = 100;
 const PUZZLE_SCALE_VALUE = 2.0;
 const SCALE_VALUE = 1.0; // puzzle dimension 100 x 100 px
 
-function onDrag(this: Element, event: DragEvent, d: unknown) {
-  /*  Note: only work with d.x instead of d.coordinates.x
-      Could not found out why, therefore we use d.x for now
-      d.x will be removed later
-  */
-
-  d.x = event.x;
-  d.y = event.y;
-
-  d.coordinates.x = event.x;
-  d.coordinates.y = event.y;
-  d3.select(this)
-    //   // .attr('originTask.x', event.x).attr('originTask.y', event.y);
-    .attr(
-      'transform',
-      `scale(${SCALE_VALUE}) 
-    translate(${d.coordinates.x},${d.coordinates.y})`
-    );
-}
+/*
+OnDrag. When current Element is dragged near a node with the
+same position, then add the position of the other element + the widht
+*/
 
 function onDragEnd(_ev: any, data: any, setNode: Function) {
   setNode(data as SVGTaskNode);
@@ -46,6 +32,54 @@ const draw = (
   setSelectedTaskNode: Function,
   openEditModal: Function
 ) => {
+  function onDrag(this: any, event: DragEvent, d: unknown) {
+    /*  Note: only work with d.x instead of d.coordinates.x
+        Could not found out why, therefore we use d.x for now
+        d.x will be removed later
+    */
+
+    const SNAP_PX = 30;
+    const X_OFFSET = 48; // Puzzle connection length
+    const PUZZLE_WIDTH = PUZZLE_SCALE_VALUE * PUZZLE_DIMENSION;
+    let shouldSnap = false;
+    svgNodes
+      .filter((node) => node.id !== d.id)
+      .forEach((node) => {
+        let x_dist = Math.abs(
+          event.x - (node.coordinates!.x + PUZZLE_WIDTH - X_OFFSET)
+        );
+
+        if (x_dist < SNAP_PX) {
+          let y_dist = Math.abs(event.y - node.coordinates!.y);
+          if (y_dist < SNAP_PX) {
+            shouldSnap = true;
+
+            d.x = node.coordinates!.x + PUZZLE_WIDTH - X_OFFSET;
+            d.y = node.coordinates!.y;
+
+            d.coordinates.x = node.coordinates!.x + PUZZLE_WIDTH - X_OFFSET;
+            d.coordinates.y = node.coordinates!.y;
+            return;
+          }
+        }
+      });
+
+    if (!shouldSnap) {
+      d.x = event.x;
+      d.y = event.y;
+
+      d.coordinates.x = event.x;
+      d.coordinates.y = event.y;
+    }
+    d3.select(this)
+      //   // .attr('originTask.x', event.x).attr('originTask.y', event.y);
+      .attr(
+        'transform',
+        `scale(${SCALE_VALUE}) 
+      translate(${d.coordinates.x},${d.coordinates.y})`
+      );
+  }
+
   const dragHandler = d3
     .drag()
     .on('drag', onDrag)
@@ -108,7 +142,7 @@ const draw = (
         .attr('fill', 'rgb(31, 41, 55)');
 
       //Append the text
-      const text = node
+      node
         .append('text')
         .attr('x', 75)
         .attr('y', 186)
@@ -121,6 +155,19 @@ const draw = (
           if (text.length > 16) return text.slice(0, 16) + '...';
           return text;
         });
+      // Append Checkmark
+      node
+        .filter((n) => n.completed === true)
+        .append('svg')
+        .attr('x', 60)
+        .attr('y', 80)
+
+        .append('polygon')
+        .attr('points', '40.6,12.1 17,35.7 7.4,26.1 4.6,29 17,41.3 43.4,14.9')
+        .attr('fill', 'green')
+        .attr('transform', 'scale(1.5)')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1);
 
       return node;
     });
