@@ -188,7 +188,6 @@ const ProfileButton = ({
 const Header = () => {
   const [open, setOpen] = useState(false);
   const { isAuthenticated, logout } = useAuth();
-  console.log(isAuthenticated);
 
   return (
     <nav className="bg-gray-800">
@@ -248,13 +247,13 @@ const Header = () => {
           <div className="relative flex flex-1  sm:items-stretch">
             {/* Brand */}
             <div className="flex flex-shrink-0 items-center">
-              <div className="relative h-14 w-52">
-                <Link href="/">
-                  <a>
+              <Link href="/">
+                <a>
+                  <div className="relative h-14 w-52">
                     <Image layout="fill" src={"/Flocess.png"} alt="Logo" />
-                  </a>
-                </Link>
-              </div>
+                  </div>
+                </a>
+              </Link>
             </div>
           </div>
           {/* Right Menu Buttons */}

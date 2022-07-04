@@ -23,7 +23,6 @@ const SVGArea = () => {
 
   // Draw the Nodes onChange
   useEffect(() => {
-    console.log("Should trigger a redraw!");
     SVGDrawer.draw(
       svgTaskNodes,
       updateTaskNode,
@@ -78,12 +77,12 @@ const SVGArea = () => {
 
   return (
     <div
-      className="m-1"
+      className="m-1 h-[calc(100vh_-_18.6rem)]"
       onDrop={(e) => onDrop(e)}
       onDragLeave={() => onDragLeave()}
       onDragOver={(e) => onDragOver(e)}
     >
-      <svg className="h-96 w-full"></svg>
+      <svg className="h-full w-full"></svg>
     </div>
   );
 };

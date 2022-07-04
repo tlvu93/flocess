@@ -10,20 +10,18 @@ import { NextPage } from "next";
 
 const WorkflowCreator: NextPage = () => {
   return (
-    <div className="App">
-      <ModalState>
-        <TaskState>
-          <WorkflowState>
-            {/* SVG Area / Canvas where the nodes will be rendered */}
-            <SVGArea />
+    <ModalState>
+      <TaskState>
+        <WorkflowState>
+          {/* SVG Area / Canvas where the nodes will be rendered */}
+          <SVGArea />
+          {/* Dashboard with Components, which are draggable */}
+          <ComponentList />
 
-            {/* Dashboard with Components, which are draggable */}
-            <ComponentList />
-            <Modals />
-          </WorkflowState>
-        </TaskState>
-      </ModalState>
-    </div>
+          <Modals />
+        </WorkflowState>
+      </TaskState>
+    </ModalState>
   );
 };
 
