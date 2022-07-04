@@ -29,7 +29,7 @@ const SVGArea = () => {
       setSelectedTaskNode,
       openEditModal
     );
-  }, [svgTaskNodes]);
+  }, [openEditModal, setSelectedTaskNode, svgTaskNodes, updateTaskNode]);
 
   // Drag Handlers
   // =================================================================

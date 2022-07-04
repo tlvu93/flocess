@@ -25,6 +25,12 @@ const ProfileButton = ({
     router.push("/signin");
   };
 
+  const handleOnSignIn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setOpen(false);
+    router.push("/signin");
+  };
+
   return (
     <div className="relative ml-3">
       {/* Profile dropdown Button*/}
@@ -155,27 +161,28 @@ const ProfileButton = ({
             <ul className="space-y-3 dark:text-white">
               {/* Sign in Li*/}
               <li className="font-medium">
-                <Link href="/signin">
-                  <a className="flex transform items-center border-r-4 border-transparent transition-colors duration-200 hover:border-green-600">
-                    <div className="mr-3 text-green-600">
-                      <svg
-                        className="h-6 w-6"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                        />
-                      </svg>
-                    </div>
-                    Sign In
-                  </a>
-                </Link>
+                <button
+                  onClick={(e) => handleOnSignIn(e)}
+                  className="flex w-full transform items-center border-r-4 border-transparent transition-colors duration-200 hover:border-green-600"
+                >
+                  <div className="mr-3 text-green-600">
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                      />
+                    </svg>
+                  </div>
+                  Sign In
+                </button>
               </li>
             </ul>
           )}
