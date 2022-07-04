@@ -5,11 +5,11 @@ import AuthState from "@context/auth-context";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <AuthState>
+    <AuthState>
+      <Layout>
         <Component {...pageProps} />
-      </AuthState>
-    </Layout>
+      </Layout>
+    </AuthState>
   );
 }
 

@@ -11,7 +11,7 @@ interface AuthContext {
   registerUser: (formData: any) => Promise<void>;
   loginUser: (formData: any) => Promise<void>;
   logout: () => void;
-  user: User;
+  user: User | null;
 }
 
 const AuthContext = createContext<AuthContext>({} as AuthContext);
@@ -19,21 +19,21 @@ export const useAuth = () => useContext(AuthContext);
 
 const AuthState = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState({} as User);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
   //const [token, setToken] = useState(localStorage.getItem("token"));
 
-  useEffect(() => {
-    const getUser = async () => {
-      let data = {
-        name: "User1",
-      };
-      setUser(data);
-      setIsAuthenticated(true);
-      setLoading(false);
-    };
-    getUser();
-  }, []);
+  //   useEffect(() => {
+  //     const getUser = async () => {
+  //       let data = {
+  //         name: "User1",
+  //       };
+  //       setUser(data);
+  //       setIsAuthenticated(true);
+  //       setLoading(false);
+  //     };
+  //     getUser();
+  //   }, []);
 
   const registerUser = async (formData: any) => {
     try {
@@ -91,7 +91,7 @@ const AuthState = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     // localStorage.removeItem("token");
     // setToken(null);
-    setUser({});
+    setUser(null);
     setIsAuthenticated(false);
   };
 
