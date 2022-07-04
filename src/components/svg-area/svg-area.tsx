@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useTaskContext } from "src/context/task-context";
 import { v4 as uuid } from "uuid";
 

@@ -19,7 +19,7 @@ export const useAuth = () => useContext(AuthContext);
 
 const AuthState = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   //const [token, setToken] = useState(localStorage.getItem("token"));
 

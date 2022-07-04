@@ -1,32 +1,19 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
+import { useAuth } from "@context/auth-context";
 import { LockClosedIcon, LoginIcon } from "@heroicons/react/solid";
+import { useRouter } from "next/router";
+import React from "react";
 
-export default function Example() {
+export default function SignIn() {
+  const { loginUser } = useAuth();
+  const router = useRouter();
+
+  const handleOnSignIn = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    loginUser({});
+    router.push("/workflow-creator");
+  };
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-50">
-        <body class="h-full">
-        ```
-      */}
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div className="flex flex-col">
@@ -95,7 +82,7 @@ export default function Example() {
             </div>
 
             <div className="flex flex-col place-items-center gap-y-5">
-              <button
+              {/* <button
                 type="submit"
                 className="group relative flex w-full justify-center rounded-md border border-transparent bg-yellow-600 py-2 px-4 text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
               >
@@ -106,17 +93,29 @@ export default function Example() {
                   />
                 </span>
                 Sign in
-              </button>
-              <hr className="w-full border bg-gray-300" />
-              <button
-                type="submit"
-                className="group relative flex w-36 justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-              >
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
-                Register
-              </button>
+              </button> */}
             </div>
           </form>
+          {/* TODO: Replace this Dummy Button with Submit button later*/}
+          <div className="flex flex-col items-center justify-center">
+            <button
+              onClick={(e) => handleOnSignIn(e)}
+              className="group relative flex w-full justify-center rounded-md border border-transparent bg-yellow-600 py-2 px-4 text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+            >
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                <LockClosedIcon
+                  className="h-5 w-5 text-yellow-500 group-hover:text-yellow-400"
+                  aria-hidden="true"
+                />
+              </span>
+              Sign in
+            </button>
+            <hr className="w-full border bg-gray-300" />
+            <button className="group relative flex w-36 justify-center rounded-md border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+              <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
+              Register
+            </button>
+          </div>
         </div>
       </div>
     </>
