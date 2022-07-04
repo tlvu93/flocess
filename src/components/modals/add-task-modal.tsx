@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ModalType, useModalContext } from "src/context/modal-context";
+import { ModalType, useModal } from "src/context/modal-context";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { useTaskContext } from "@context/task-context";
 
@@ -13,7 +13,7 @@ function AddModal() {
   const {
     modals: { showAddTaskModal },
     closeModal,
-  } = useModalContext();
+  } = useModal();
 
   const clearData = () => {
     setTitle("");

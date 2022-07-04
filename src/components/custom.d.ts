@@ -3,6 +3,10 @@ declare module '*.svg' {
   export default content;
 }
 
+interface User {
+  name: string;
+}
+
 interface Task {
   id: string;
   name: string;

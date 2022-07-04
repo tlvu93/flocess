@@ -1,8 +1,10 @@
+import { useAuth } from "@context/auth-context";
 import Image from "next/image";
 import { useState } from "react";
 
 const Header = () => {
   const [open, setOpen] = useState(true);
+  const { isAuthenticated } = useAuth();
 
   return (
     <nav className="bg-gray-800">

@@ -19,7 +19,7 @@ interface ModalContext {
 }
 
 const ModalContext = createContext<ModalContext>({} as ModalContext);
-export const useModalContext = () => useContext(ModalContext);
+export const useModal = () => useContext(ModalContext);
 
 const ModalState = ({ children }: React.PropsWithChildren) => {
   const [showAddTaskModal, setShowAddTaskModal] = useState<boolean>(false);

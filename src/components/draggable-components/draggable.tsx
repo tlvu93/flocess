@@ -1,4 +1,4 @@
-import { ModalType, useModalContext } from "@context/modal-context";
+import { ModalType, useModal } from "@context/modal-context";
 import { useTaskContext } from "@context/task-context";
 import { ReactNode } from "react";
 
@@ -11,7 +11,7 @@ interface Draggable {
 
 const Draggable = ({ children, data, onDragStart, onDragEnd }: Draggable) => {
   const { setSelectedTask } = useTaskContext();
-  const { openModal } = useModalContext();
+  const { openModal } = useModal();
 
   const onDragStarting = (e: React.DragEvent<HTMLDivElement>) => {
     // Get the block coordinates

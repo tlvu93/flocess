@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ModalType, useModalContext } from "src/context/modal-context";
+import { ModalType, useModal } from "src/context/modal-context";
 import { HexColorInput, HexColorPicker } from "react-colorful";
 import { useTaskContext } from "@context/task-context";
 
@@ -13,7 +13,7 @@ function EditModal() {
   const {
     modals: { showEditTaskModal },
     closeModal,
-  } = useModalContext();
+  } = useModal();
 
   useEffect(() => {
     if (Object.keys(selectedTask).length === 0) return;

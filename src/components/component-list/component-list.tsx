@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { ModalType, useModalContext } from "src/context/modal-context";
+import { ModalType, useModal } from "src/context/modal-context";
 
 import { DraggableBlocks } from "@components/draggable-components";
 import Container from "@layouts/Container";
 
 function ComponentList() {
-  const { openModal } = useModalContext();
+  const { openModal } = useModal();
   return (
     <div>
       <Container>
