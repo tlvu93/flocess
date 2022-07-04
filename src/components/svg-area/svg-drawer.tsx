@@ -91,86 +91,109 @@ const draw = (
 
   allSelectedNodes
     .data(svgNodes, (node) => node.id)
-    .join((enter) => {
-      // Draw a group node that will contain the squre and the text
-      const node = enter
-        .append('g')
-        .attr('class', 'node')
+    .join(
+      (enter) => {
+        // Draw a group node that will contain the squre and the text
+        const node = enter
+          .append('g')
+          .attr('class', 'node')
 
-        .attr(
-          'transform-origin',
-          (node) =>
-            `${node.coordinates!.x + 50}px ${node.coordinates!.y + 30}px`
-        )
-        .attr(
-          'transform',
-          (node) => `translate(${node.coordinates!.x} ,${node.coordinates!.y})`
-        )
-        .call((enter) =>
-          enter
-            .transition()
-            .duration(100)
-            .attr(
-              'transform',
-              (node) =>
-                `scale(${SCALE_VALUE}) translate(${node.coordinates!.x} ,${
-                  node.coordinates!.y
-                })`
-            )
-        )
-        .on('click', (e, data) => {
-          console.log('Clicked');
-          setSelectedTaskNode(data);
-          openEditModal();
-        });
+          .attr(
+            'transform-origin',
+            (node) =>
+              `${node.coordinates!.x + 50}px ${node.coordinates!.y + 30}px`
+          )
+          .attr(
+            'transform',
+            (node) =>
+              `translate(${node.coordinates!.x} ,${node.coordinates!.y})`
+          )
+          .call((enter) =>
+            enter
+              .transition()
+              .duration(100)
+              .attr(
+                'transform',
+                (node) =>
+                  `scale(${SCALE_VALUE}) translate(${node.coordinates!.x} ,${
+                    node.coordinates!.y
+                  })`
+              )
+          )
+          .on('click', (e, data) => {
+            console.log('Clicked');
+            setSelectedTaskNode(data);
+            openEditModal();
+          });
 
-      // Append the PuzzlePath to the group
-      node
-        .append('path')
-        .attr('d', PUZZLE_MAIN_SVG)
-        .attr('transform', `scale(${PUZZLE_SCALE_VALUE})`)
-        .attr('fill', (node) => node.originTask.color);
+        // Append the PuzzlePath to the group
+        node
+          .append('path')
+          .attr('d', PUZZLE_MAIN_SVG)
+          .attr('transform', `scale(${PUZZLE_SCALE_VALUE})`)
+          .attr('fill', (node) => node.originTask.color);
 
-      //Append background for text
-      node
-        .append('rect')
-        .attr('width', 152)
-        .attr('height', 30)
-        .attr('y', 170)
-        .attr('rx', 0)
-        .attr('ry', 10)
-        .attr('fill', 'rgb(31, 41, 55)');
+        //Append background for text
+        node
+          .append('rect')
+          .attr('width', 152)
+          .attr('height', 30)
+          .attr('y', 170)
+          .attr('rx', 0)
+          .attr('ry', 10)
+          .attr('fill', 'rgb(31, 41, 55)');
 
-      //Append the text
-      node
-        .append('text')
-        .attr('x', 75)
-        .attr('y', 186)
-        .attr('dominant-baseline', 'middle')
-        .attr('text-anchor', 'middle')
-        .attr('class', 'select-none font-bold')
-        .attr('fill', 'white')
-        .text((node) => {
-          let text = node.originTask.name;
-          if (text.length > 16) return text.slice(0, 16) + '...';
-          return text;
-        });
-      // Append Checkmark
-      node
-        .filter((n) => n.completed === true)
-        .append('svg')
-        .attr('x', 60)
-        .attr('y', 80)
+        //Append the text
+        node
+          .append('text')
+          .attr('x', 75)
+          .attr('y', 186)
+          .attr('dominant-baseline', 'middle')
+          .attr('text-anchor', 'middle')
+          .attr('class', 'select-none font-bold')
+          .attr('fill', 'white')
+          .text((node) => {
+            let text = node.originTask.name;
+            if (text.length > 16) return text.slice(0, 16) + '...';
+            return text;
+          });
+        // Append Checkmark
+        node
+          .filter((n) => n.completed === true)
+          .append('svg')
+          .attr('x', 60)
+          .attr('y', 80)
 
-        .append('polygon')
-        .attr('points', '40.6,12.1 17,35.7 7.4,26.1 4.6,29 17,41.3 43.4,14.9')
-        .attr('fill', 'green')
-        .attr('transform', 'scale(1.5)')
-        .attr('stroke', 'black')
-        .attr('stroke-width', 1);
+          .append('polygon')
+          .attr('points', '40.6,12.1 17,35.7 7.4,26.1 4.6,29 17,41.3 43.4,14.9')
+          .attr('fill', 'green')
+          .attr('transform', 'scale(1.5)')
+          .attr('stroke', 'black')
+          .attr('stroke-width', 1);
 
-      return node;
-    });
+        return node;
+      },
+      (update) => {
+        console.log('Calling update');
+        const node = update
+          .select('svg')
+          .selectAll<SVGSVGElement, SVGTaskNode>('.node');
+
+        node
+          .filter((n) => n.completed === true)
+          .append('svg')
+          .attr('x', 60)
+          .attr('y', 80)
+          .append('polygon')
+          .attr('points', '40.6,12.1 17,35.7 7.4,26.1 4.6,29 17,41.3 43.4,14.9')
+          .attr('fill', 'green')
+          .attr('transform', 'scale(3.5)')
+          .attr('stroke', 'black')
+          .attr('stroke-width', 1);
+
+        return node;
+      }
+    );
 
   const allNodes = d3.select('svg').selectAll('.node') as d3.Selection<
     Element,

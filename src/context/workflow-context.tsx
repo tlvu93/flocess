@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState } from "react";
-import { v4 as uuid } from "uuid";
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { fetchItems } from 'src/utils/fetchItems';
+import { v4 as uuid } from 'uuid';
 
 interface WorkflowContext {
-  svgNodes: SVGTaskNode[];
+  svgTaskNodes: SVGTaskNode[];
   addTaskNode: (data: SVGTaskNode) => void;
   updateTaskNode: (data: SVGTaskNode) => void;
   deleteTaskNode: (id: string) => void;
@@ -18,6 +19,21 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
   const [selectedTaskNode, setSelectedTaskNode] = useState<SVGTaskNode>(
     {} as SVGTaskNode
   );
+  const [saving, setSaving] = useState(false);
+
+  // Loads the Nodes on start
+  useEffect(() => {
+    setSvgTaskNodes(fetchItems());
+
+    setSaving(true);
+  }, []);
+
+  // Saves the nodes onChange
+  useEffect(() => {
+    if (!saving) return;
+
+    localStorage.setItem('nodes', JSON.stringify(svgTaskNodes));
+  }, [svgTaskNodes, saving]);
 
   const addTaskNode = (data: SVGTaskNode) => {
     data.id = uuid();
@@ -31,6 +47,8 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
       return node;
     });
 
+    //console.log(data.id, updatedTasks);
+
     setSvgTaskNodes(updatedTasks);
   };
 
@@ -42,7 +60,7 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
   return (
     <WorkflowContext.Provider
       value={{
-        svgNodes: svgTaskNodes,
+        svgTaskNodes,
         addTaskNode,
         updateTaskNode,
         deleteTaskNode,
