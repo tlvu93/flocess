@@ -1,14 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import Container from '@layouts/Container';
+import Container from "@layouts/Container";
+import { NextPage } from "next";
 
-function Playground() {
+const Playground: NextPage = () => {
   return (
     <Container>
       <div>test</div>
       <h1>test test</h1>
     </Container>
   );
-}
+};
 
 export default Playground;

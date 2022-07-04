@@ -6,8 +6,9 @@ import ComponentList from "@components/component-list/component-list";
 import { SVGArea } from "@components/svg-area";
 import WorkflowState from "@context/workflow-context";
 import Modals from "@components/modals/modals";
+import { NextPage } from "next";
 
-function WorkflowCreator() {
+const WorkflowCreator: NextPage = () => {
   return (
     <div className="App">
       <ModalState>
@@ -24,6 +25,6 @@ function WorkflowCreator() {
       </ModalState>
     </div>
   );
-}
+};
 
 export default WorkflowCreator;
