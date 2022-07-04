@@ -7,7 +7,7 @@ const createTask = (
   name = "New Task",
   color = "#b62df7",
   content = "",
-  resources = []
+  resources = ""
 ) => {
   return {
     id: uuid(),
