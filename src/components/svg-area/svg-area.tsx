@@ -66,7 +66,8 @@ const SVGArea = () => {
     const newNode: SVGTaskNode = {
       id: uuid(),
       originTask: dragData.draggedData,
-      coordinates: { x: x, y: y },
+      x,
+      y,
       completed: false,
     };
 

@@ -17,11 +17,11 @@ interface Task {
 
 interface SVGTaskNode {
   id: string;
-  originTask: Task
-  coordinates?: {
-    x: number;
-    y: number;
-  }
+  originTask: Task;
+
+  x: number;
+  y: number;
+
   completed: boolean;
 }
 
