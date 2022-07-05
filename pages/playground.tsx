@@ -1,7 +1,7 @@
-import React from "react";
+import { NextPage } from 'next';
+import React from 'react';
 
-import Container from "@layouts/Container";
-import { NextPage } from "next";
+import Container from '@layouts/Container';
 
 const Playground: NextPage = () => {
   return (

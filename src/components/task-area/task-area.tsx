@@ -3,16 +3,16 @@ import { useTaskContext } from 'src/context/task-context';
 
 import Draggable from './draggable';
 
-const DraggableBlocks = () => {
+const TaskArea = () => {
   const [touchStartY, setTouchStartY] = useState(0);
   const [touchEndY, setTouchEndY] = useState(0);
   const { tasks, setDraggedTask } = useTaskContext();
 
-  const onDragStart = (draggedTaskData: DraggedData) => {
+  const handleDragStart = (draggedTaskData: DraggedData) => {
     setDraggedTask(draggedTaskData);
   };
 
-  const onDragEnd = () => {};
+  const handleDragEnd = () => {};
   let scrollBarRef = useRef<HTMLDivElement>(null);
 
   const handleOnWheel = (e: React.WheelEvent) => {
@@ -51,8 +51,8 @@ const DraggableBlocks = () => {
           <Draggable
             key={task.id}
             data={task}
-            onDragStart={(dragData) => onDragStart(dragData)}
-            onDragEnd={() => onDragEnd()}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
           >
             <div
               // className="h-20 w-20 bg-[url('/puzzle-main.svg')] bg-cover"
@@ -68,4 +68,4 @@ const DraggableBlocks = () => {
   );
 };
 
-export default DraggableBlocks;
+export default TaskArea;

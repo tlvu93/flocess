@@ -14,7 +14,7 @@ const Draggable = ({ children, data, onDragStart, onDragEnd }: Draggable) => {
   const { setSelectedTask } = useTaskContext();
   const { openModal } = useModal();
 
-  const onDragStarting = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     // Get the block coordinates
     let currentTargetRect = e.currentTarget! as HTMLElement;
     let boundingRect = currentTargetRect.getBoundingClientRect();
@@ -32,12 +32,12 @@ const Draggable = ({ children, data, onDragStart, onDragEnd }: Draggable) => {
     onDragStart({ draggedData: data, offset } as DraggedData);
   };
 
-  const onDragEnding = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
     onDragEnd();
   };
 
-  const onClicking = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleClick = (_e: React.DragEvent<HTMLDivElement>) => {
     setSelectedTask(data);
     openModal(ModalType.EditTask);
   };
@@ -45,9 +45,9 @@ const Draggable = ({ children, data, onDragStart, onDragEnd }: Draggable) => {
   return (
     <div
       draggable={true}
-      onDragStart={onDragStarting}
-      onDragEnd={onDragEnding}
-      onClick={onClicking}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onClick={handleClick}
     >
       {children}
     </div>

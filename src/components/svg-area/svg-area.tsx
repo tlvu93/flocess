@@ -78,7 +78,7 @@ const SVGArea = () => {
 
   return (
     <div
-      className='m-1 h-[calc(100vh_-_18.6rem)]'
+      className='m-1 h-[calc(100vh_-_18.6rem)]' //TODO: Replace Hardcoded value
       onDrop={(e) => onDrop(e)}
       onDragLeave={() => onDragLeave()}
       onDragOver={(e) => onDragOver(e)}
