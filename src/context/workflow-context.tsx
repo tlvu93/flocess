@@ -1,5 +1,6 @@
+import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { fetchNodes } from 'src/utils/fetchItems';
+import { loadWorkflow, saveWorkflow } from 'src/utils/fetchItems';
 import { v4 as uuid } from 'uuid';
 
 interface WorkflowContext {
@@ -15,26 +16,39 @@ const WorkflowContext = createContext<WorkflowContext>({} as WorkflowContext);
 export const useWorkflowContext = () => useContext(WorkflowContext);
 
 const WorkflowState = ({ children }: { children: React.ReactNode }) => {
-  const [id, setId] = useState('');
+  const router = useRouter();
+  const { id } = router.query;
+  const [workflowName, setWorkflowName] = useState('');
+  const [workflowId, setWorkflowId] = useState(null);
   const [svgTaskNodes, setSvgTaskNodes] = useState<SVGTaskNode[]>([]);
   const [selectedTaskNode, setSelectedTaskNode] = useState<SVGTaskNode>(
     {} as SVGTaskNode
   );
   const [saving, setSaving] = useState(false);
 
-  // Loads the Nodes on start
   useEffect(() => {
-    setSvgTaskNodes(fetchNodes());
+    setWorkflowId(id);
+  }, [id]);
+  // Loads the Nodes on start
 
+  useEffect(() => {
+    if (!workflowId) return;
+
+    let workflow = loadWorkflow(workflowId);
+
+    if (workflow) {
+      setWorkflowName(workflow.workflowName);
+      setSvgTaskNodes(workflow.svgTaskNodes);
+    }
     setSaving(true);
-  }, []);
+  }, [workflowId]);
 
   // Saves the nodes onChange
   useEffect(() => {
-    if (!saving) return;
+    if (!saving || !workflowId) return;
 
-    localStorage.setItem('nodes', JSON.stringify(svgTaskNodes));
-  }, [svgTaskNodes, saving]);
+    saveWorkflow(workflowName, workflowId, svgTaskNodes);
+  }, [svgTaskNodes, saving, workflowName, workflowId]);
 
   const addTaskNode = (data: SVGTaskNode) => {
     data.id = uuid();

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { v4 as uuid } from 'uuid';
 
 import { useAuth } from '@context/auth-context';
 import { useTaskContext } from '@context/task-context';
@@ -32,17 +33,22 @@ let node1: SVGTaskNode = {
   completed: false,
 };
 
-let wf1: Workflow = {
-  id: 'w1',
-  name: 'workflow 1',
-  taskList: [node1, node1],
+const createWorkflow = (id: string, name: string, taskList: SVGTaskNode[]) => {
+  return {
+    id,
+    name,
+    taskList,
+  } as Workflow;
 };
 
-let wf2: Workflow = {
-  id: 'w2',
-  name: 'workflow 2',
-  taskList: [node1, node1],
-};
+let wf1 = createWorkflow('09d8ec07-f35c-448a-b799-387bfe561370', 'workflow 1', [
+  node1,
+  node1,
+]);
+let wf2 = createWorkflow('19d8ec07-f35c-448a-b799-387bfe561371', 'workflow 2', [
+  node1,
+  node1,
+]);
 
 const exampleUser: User = {
   name: 'testUser 2',
@@ -52,7 +58,7 @@ const exampleUser: User = {
 
 const Workflow = ({ data }: { data: Workflow }) => {
   return (
-    <Link href={`/workflow/${data.id}`}>
+    <Link href={`/workflow-creator/${data.id}`}>
       <a>
         <Card>
           <h2> {data.name}</h2>
@@ -64,8 +70,7 @@ const Workflow = ({ data }: { data: Workflow }) => {
 
 const UserDashboard = () => {
   const { isAuthenticated } = useAuth();
-  const { tasks } = useTaskContext();
-  const [workflows, setWorkflows] = useState<Workflow[]>([wf1, wf2, wf1, wf2]);
+  const [workflows, setWorkflows] = useState<Workflow[]>([wf1, wf2]);
   return (
     <>
       {isAuthenticated && (

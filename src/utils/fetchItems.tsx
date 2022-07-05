@@ -1,12 +1,58 @@
 import { v4 as uuid } from 'uuid';
 
-export const fetchNodes = () => {
-  let parsedNodes = localStorage.getItem('nodes');
+export const loadWorkflow = (workflowId: string) => {
+  // Should return a list of workflows or empty
+
+  let parsedNodes = localStorage.getItem('workflows');
 
   if (!parsedNodes) {
-    return [];
+    console.log('No items found in localStorage');
+    return null;
   } else {
-    return JSON.parse(parsedNodes!);
+    let workflows = JSON.parse(parsedNodes!);
+
+    let index = workflows.findIndex((wf) => wf.workflowId === workflowId);
+
+    if (index === -1) {
+      return null;
+    } else {
+      return workflows[index];
+    }
+  }
+};
+
+export const saveWorkflow = (
+  workflowName: string,
+  workflowId: string,
+  svgTaskNodes: SVGTaskNode[]
+) => {
+  const workflow = {
+    workflowName,
+    workflowId,
+    svgTaskNodes,
+  };
+
+  let parsedNodes = localStorage.getItem('workflows');
+  if (!parsedNodes) {
+    let workflows = [workflow];
+    localStorage.setItem('workflows', JSON.stringify(workflows));
+  } else {
+    // Check if Workflow already exist
+    let workflows: [] = JSON.parse(parsedNodes!);
+
+    let index = workflows.findIndex(
+      (wf) => wf.workflowId === workflow.workflowId
+    );
+
+    if (index === -1) {
+      localStorage.setItem(
+        'workflows',
+        JSON.stringify([...workflows, workflow])
+      );
+    } else {
+      workflows[index] = workflow;
+      localStorage.setItem('workflows', JSON.stringify(workflows));
+    }
   }
 };
 
