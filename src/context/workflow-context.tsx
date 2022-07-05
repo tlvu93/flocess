@@ -15,6 +15,7 @@ const WorkflowContext = createContext<WorkflowContext>({} as WorkflowContext);
 export const useWorkflowContext = () => useContext(WorkflowContext);
 
 const WorkflowState = ({ children }: { children: React.ReactNode }) => {
+  const [id, setId] = useState('');
   const [svgTaskNodes, setSvgTaskNodes] = useState<SVGTaskNode[]>([]);
   const [selectedTaskNode, setSelectedTaskNode] = useState<SVGTaskNode>(
     {} as SVGTaskNode

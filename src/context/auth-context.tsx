@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
-
-import { toast } from "react-toastify";
+import axios, { AxiosError } from 'axios';
+import { useRouter } from 'next/router';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 // AuthContext
 //================================================
@@ -18,22 +18,49 @@ const AuthContext = createContext<AuthContext>({} as AuthContext);
 export const useAuth = () => useContext(AuthContext);
 
 const AuthState = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [authorized, setAuthorized] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-  //const [token, setToken] = useState(localStorage.getItem("token"));
 
-  //   useEffect(() => {
-  //     const getUser = async () => {
-  //       let data = {
-  //         name: "User1",
-  //       };
-  //       setUser(data);
-  //       setIsAuthenticated(true);
-  //       setLoading(false);
-  //     };
-  //     getUser();
-  //   }, []);
+  // useEffect(() => {
+  //   console.log('Authorized:', authorized);
+  //   authCheck(router.asPath);
+
+  //   // on route change start - hide page content by setting authorized to false
+  //   const hideContent = () => setAuthorized(false);
+  //   router.events.on('routeChangeStart', hideContent);
+
+  //   // on route change complete - run auth check
+  //   router.events.on('routeChangeComplete', authCheck);
+
+  //   // unsubscribe from events in useEffect return function
+  //   return () => {
+  //     router.events.off('routeChangeStart', hideContent);
+  //     router.events.off('routeChangeComplete', authCheck);
+  //   };
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  // const authCheck = (url: string) => {
+  //   const publicPaths = ['/', '/login'];
+  //   const path = url.split('?')[0];
+
+  //   // Check if current user is authorized
+  //   if (!user && !publicPaths.includes(path)) {
+  //     setAuthorized(false);
+  //     router.push({
+  //       pathname: '/login',
+  //       query: { returnUrl: router.asPath },
+  //     });
+  //   } else {
+  //     console.log('Should be authorized');
+  //     console.log(authorized);
+  //     setAuthorized(true);
+  //   }
+  // };
 
   const registerUser = async (formData: any) => {
     try {
@@ -54,7 +81,7 @@ const AuthState = ({ children }: { children: React.ReactNode }) => {
         toast.error(error.message);
         setLoading(false);
       } else {
-        toast.error("Internal error");
+        toast.error('Internal error');
         setLoading(false);
       }
     }
@@ -66,7 +93,7 @@ const AuthState = ({ children }: { children: React.ReactNode }) => {
     //   const {
     //     data: { token },
     //   } = await axios.post(
-    //     `${process.env.REACT_APP_BLOG_API_URL}/auth/signin`,
+    //     `${process.env.REACT_APP_BLOG_API_URL}/auth/login`,
     //     formData
     //   );
     //   localStorage.setItem("token", token);
@@ -84,6 +111,12 @@ const AuthState = ({ children }: { children: React.ReactNode }) => {
     //   }
     // }
 
+    const testUser: User = {
+      name: 'TestUser',
+      role: 0,
+    };
+
+    setUser(testUser);
     setIsAuthenticated(true);
     setLoading(false);
   };
@@ -106,7 +139,7 @@ const AuthState = ({ children }: { children: React.ReactNode }) => {
         user,
       }}
     >
-      {children}
+      {authorized && children}
     </AuthContext.Provider>
   );
 };

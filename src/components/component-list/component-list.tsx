@@ -2,13 +2,13 @@ import React from 'react';
 import { ModalType, useModal } from 'src/context/modal-context';
 
 import TaskArea from '@components/task-area/task-area';
-import Container from '@layouts/Container';
+import Container, { ContainerStyle } from '@layouts/Container';
 
 function ComponentList() {
   const { openModal } = useModal();
   return (
     <div>
-      <Container>
+      <Container style={ContainerStyle.Dark}>
         <div className='flex h-24 flex-row justify-between'>
           <div className='max'>
             <TaskArea />

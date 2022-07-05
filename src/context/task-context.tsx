@@ -31,7 +31,7 @@ const TaskState = ({ children }: { children: React.ReactNode }) => {
 
   // Loads the Nodes on start
   useEffect(() => {
-    setTasks(fetchTasks(false));
+    setTasks(fetchTasks(true));
     setSaving(true);
   }, []);
 

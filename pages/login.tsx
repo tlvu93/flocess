@@ -11,8 +11,9 @@ export default function SignIn() {
   const handleOnSignIn = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     loginUser({});
-    router.push('/workflow-creator');
+    router.push('/user-dashboard');
   };
+
   return (
     <>
       <div className='flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8'>
