@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { fetchItems } from 'src/utils/fetchItems';
+import { fetchNodes } from 'src/utils/fetchItems';
 import { v4 as uuid } from 'uuid';
 
 interface WorkflowContext {
@@ -23,7 +23,7 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
 
   // Loads the Nodes on start
   useEffect(() => {
-    setSvgTaskNodes(fetchItems());
+    setSvgTaskNodes(fetchNodes());
 
     setSaving(true);
   }, []);
@@ -47,13 +47,11 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
       return node;
     });
 
-    //console.log(data.id, updatedTasks);
-
     setSvgTaskNodes(updatedTasks);
   };
 
   const deleteTaskNode = (id: string) => {
-    const updatedTasks = svgTaskNodes.filter((task) => task.id === id);
+    const updatedTasks = svgTaskNodes.filter((task) => task.id !== id);
     setSvgTaskNodes(updatedTasks);
   };
 

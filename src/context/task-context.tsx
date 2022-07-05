@@ -1,28 +1,6 @@
-import React, { createContext, useContext, useState } from "react";
-import { v4 as uuid } from "uuid";
-
-// Utiliy functions
-//================================================
-const createTask = (
-  name = "New Task",
-  color = "#b62df7",
-  content = "",
-  resources = ""
-) => {
-  return {
-    id: uuid(),
-    name,
-    color,
-    content,
-    resources,
-  };
-};
-
-const DUMMY_TASK_COMPONENTS = [
-  createTask("Drink Water", "#b62df7"),
-  createTask("Practice Music", "#00f702"),
-  createTask("Learn HTML", "#33383d"),
-];
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { fetchTasks } from 'src/utils/fetchItems';
+import { v4 as uuid } from 'uuid';
 
 // TaskContext
 //================================================
@@ -44,11 +22,25 @@ const TaskContext = createContext<TaskContext>({} as TaskContext);
 export const useTaskContext = () => useContext(TaskContext);
 
 const TaskState = ({ children }: { children: React.ReactNode }) => {
-  const [tasks, setTasks] = useState<Task[]>(DUMMY_TASK_COMPONENTS);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedTask, setSelectedTask] = useState<Task>({} as Task);
   const [draggedTask, setDraggedTask] = useState<DraggedData>(
     {} as DraggedData
   );
+  const [saving, setSaving] = useState(false);
+
+  // Loads the Nodes on start
+  useEffect(() => {
+    setTasks(fetchTasks(false));
+    setSaving(true);
+  }, []);
+
+  // Saves the nodes onChange
+  useEffect(() => {
+    if (!saving) return;
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks, saving]);
 
   const addTask = (data: Task) => {
     data.id = uuid();
@@ -65,7 +57,7 @@ const TaskState = ({ children }: { children: React.ReactNode }) => {
   };
 
   const deleteTask = (id: string) => {
-    const updatedTasks = tasks.filter((task) => task.id === id);
+    const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
   };
 

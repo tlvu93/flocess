@@ -1,6 +1,7 @@
-import { ModalType, useModal } from "@context/modal-context";
-import { useTaskContext } from "@context/task-context";
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
+
+import { ModalType, useModal } from '@context/modal-context';
+import { useTaskContext } from '@context/task-context';
 
 interface Draggable {
   children?: ReactNode;
@@ -25,7 +26,7 @@ const Draggable = ({ children, data, onDragStart, onDragEnd }: Draggable) => {
     ];
 
     // Set the text data as identifier for onDrop
-    e.dataTransfer.setData("text/plain", "dropableElement");
+    e.dataTransfer.setData('text/plain', 'dropableElement');
 
     // Pass the drag data
     onDragStart({ draggedData: data, offset } as DraggedData);
@@ -37,7 +38,6 @@ const Draggable = ({ children, data, onDragStart, onDragEnd }: Draggable) => {
   };
 
   const onClicking = (e: React.DragEvent<HTMLDivElement>) => {
-    console.log("Clicked", data);
     setSelectedTask(data);
     openModal(ModalType.EditTask);
   };

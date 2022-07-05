@@ -143,7 +143,6 @@ const draw = (
             )
         )
         .on('click', (e, data) => {
-          console.log('Clicked');
           setSelectedTaskNode(data);
           openEditModal();
         });
