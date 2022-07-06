@@ -18,9 +18,8 @@ const AuthContext = createContext<AuthContext>({} as AuthContext);
 export const useAuth = () => useContext(AuthContext);
 
 const AuthState = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authorized, setAuthorized] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 

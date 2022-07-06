@@ -5,7 +5,7 @@ import { v4 as uuid } from 'uuid';
 interface WorkflowContext {
   workflows: Workflow[];
   selectedWorkflow: Workflow;
-  setSelectedWorkflow: (workflow: Workflow) => void;
+  setSelectedWorkflowById: (id: string) => void;
   addWorkflow: (workflow: Workflow) => void;
   updateWorkflow: (workflow: Workflow) => void;
   deleteWorkflow: (id: string) => void;
@@ -35,16 +35,25 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
   );
   const [saving, setSaving] = useState(false);
 
+  /* ============================
+  Hooks
+  */
+
   // Load all workflows on start
   useEffect(() => {
-    console.log('Loading workflows...');
     let workflows = loadWorkflows();
-    console.log('workflows: ', workflows);
     setWorkflows(workflows);
     setSaving(true);
   }, []);
 
-  // Set the Workflow on selectedWorkflow change
+  // If SVGNode changes then
+  useEffect(() => {
+    let workflow = selectedWorkflow;
+    workflow.taskNodes = taskNodes;
+    setSelectedWorkflow(workflow);
+  }, [selectedWorkflow, taskNodes]);
+
+  // Save Workflow on change
   useEffect(() => {
     if (!saving || !selectedWorkflow.id) return;
 
@@ -52,24 +61,29 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
     let index = workflows.findIndex((wf) => wf.id === selectedWorkflow.id);
 
     if (index === -1) {
+      console.log('Workflow not found... Adding new workflow\n');
       // Append new Workflow
-      localStorage.setItem(
-        'workflows',
-        JSON.stringify([...workflows, selectedWorkflow])
-      );
+      setWorkflows([...workflows, selectedWorkflow]);
     } else {
       // Update workflow
+      console.log('Workflow updated...');
       let updatedWorkflows = workflows;
       updatedWorkflows[index] = selectedWorkflow;
       setWorkflows(updatedWorkflows);
+      localStorage.setItem('workflows', JSON.stringify(workflows));
     }
-  }, [saving, selectedWorkflow, workflows]);
+  }, [taskNodes, selectedWorkflow]);
 
-  // Saves the Workflow on changes
-  useEffect(() => {
-    if (!saving) return;
-    localStorage.setItem('workflows', JSON.stringify(workflows));
-  }, [saving, workflows]);
+  /*
+  ====================================================================== */
+
+  const setSelectedWorkflowById = (id: string) => {
+    let foundWorkflow = workflows.find((workflow) => workflow.id === id);
+
+    if (!foundWorkflow) return;
+    setSelectedWorkflow(foundWorkflow);
+    setTaskNodes(foundWorkflow.taskNodes);
+  };
 
   const addWorkflow = (workflow: Workflow) => {
     workflow.id = uuid();
@@ -119,7 +133,7 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
         updateWorkflow,
         deleteWorkflow,
         selectedWorkflow,
-        setSelectedWorkflow,
+        setSelectedWorkflowById,
 
         taskNodes,
         addTaskNode,
