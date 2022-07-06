@@ -1,5 +1,6 @@
 import _ from 'cypress/types/lodash';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 import { useAuth } from '@context/auth-context';
@@ -67,7 +68,7 @@ const UserDashboard = () => {
   };
   return (
     <>
-      {isAuthenticated && (
+      {isAuthenticated ? (
         <>
           <Container style={ContainerStyle.Light}>
             <h1 className='my-4 text-3xl font-semibold'>User Workflows</h1>
@@ -84,6 +85,20 @@ const UserDashboard = () => {
             </div>
           </Container>
         </>
+      ) : (
+        <Container style={ContainerStyle.Light}>
+          <div className='flex flex-col items-center justify-center'>
+            <h1 className='my-4 text-3xl font-semibold'>Please sign in</h1>
+            <Link href={'/login'}>
+              <a
+                onClick={handleAddWorkflow}
+                className='rounded-xl bg-yellow-500 py-6 px-4 text-xl font-bold text-gray-800 hover:bg-yellow-600'
+              >
+                <p className='select-none'> Sign in</p>
+              </a>
+            </Link>
+          </div>
+        </Container>
       )}
     </>
   );
