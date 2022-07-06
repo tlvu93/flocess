@@ -29,3 +29,15 @@ type DraggedData = {
   draggedData: Task;
   offset: [number, number];
 };
+
+interface Workflow {
+  id: string;
+  name: string;
+  taskNodes: SVGTaskNode[];
+}
+
+interface User {
+  name: string;
+  tasks: Task[];
+  workflows: Workflow[];
+}

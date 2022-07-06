@@ -111,12 +111,12 @@ const AuthState = ({ children }: { children: React.ReactNode }) => {
     //   }
     // }
 
-    const testUser: User = {
-      name: 'TestUser',
-      role: 0,
-    };
+    // const testUser: User = {
+    //   name: 'TestUser',
+    //   role: 0,
+    // };
 
-    setUser(testUser);
+    // setUser(testUser);
     setIsAuthenticated(true);
     setLoading(false);
   };

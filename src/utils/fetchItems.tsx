@@ -9,9 +9,9 @@ export const loadWorkflow = (workflowId: string) => {
     console.log('No items found in localStorage');
     return null;
   } else {
-    let workflows = JSON.parse(parsedNodes!);
+    let workflows: Workflow[] = JSON.parse(parsedNodes!);
 
-    let index = workflows.findIndex((wf) => wf.workflowId === workflowId);
+    let index = workflows.findIndex((wf) => wf.id === workflowId);
 
     if (index === -1) {
       return null;
@@ -22,14 +22,14 @@ export const loadWorkflow = (workflowId: string) => {
 };
 
 export const saveWorkflow = (
-  workflowName: string,
-  workflowId: string,
-  svgTaskNodes: SVGTaskNode[]
+  name: string,
+  id: string,
+  taskNodes: SVGTaskNode[]
 ) => {
-  const workflow = {
-    workflowName,
-    workflowId,
-    svgTaskNodes,
+  const workflow: Workflow = {
+    name,
+    id,
+    taskNodes,
   };
 
   let parsedNodes = localStorage.getItem('workflows');
@@ -38,11 +38,9 @@ export const saveWorkflow = (
     localStorage.setItem('workflows', JSON.stringify(workflows));
   } else {
     // Check if Workflow already exist
-    let workflows: [] = JSON.parse(parsedNodes!);
+    let workflows: Workflow[] = JSON.parse(parsedNodes!);
 
-    let index = workflows.findIndex(
-      (wf) => wf.workflowId === workflow.workflowId
-    );
+    let index = workflows.findIndex((wf) => wf.id === workflow.id);
 
     if (index === -1) {
       localStorage.setItem(
@@ -74,9 +72,9 @@ const createTask = (
 };
 
 const DUMMY_TASK_COMPONENTS = [
-  createTask('Drink Water', '#b62df7'),
-  createTask('Practice Music', '#00f702'),
-  createTask('Learn HTML', '#33383d'),
+  createTask('Drink Water', '#b62df7', 'Drink Water'),
+  createTask('Practice Music', '#00f702', 'Daily Routine of practicing'),
+  createTask('Learn HTML', '#33383d', 'Learn HTML'),
 ];
 
 export const fetchTasks = (addDummyTasks: boolean) => {

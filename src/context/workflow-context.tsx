@@ -19,7 +19,7 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { id } = router.query;
   const [workflowName, setWorkflowName] = useState('');
-  const [workflowId, setWorkflowId] = useState(null);
+  const [workflowId, setWorkflowId] = useState<string>('');
   const [svgTaskNodes, setSvgTaskNodes] = useState<SVGTaskNode[]>([]);
   const [selectedTaskNode, setSelectedTaskNode] = useState<SVGTaskNode>(
     {} as SVGTaskNode
@@ -27,18 +27,18 @@ const WorkflowState = ({ children }: { children: React.ReactNode }) => {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    setWorkflowId(id);
+    if (typeof id === 'string') setWorkflowId(id);
   }, [id]);
   // Loads the Nodes on start
 
   useEffect(() => {
-    if (!workflowId) return;
+    if (workflowId === '') return;
 
     let workflow = loadWorkflow(workflowId);
 
     if (workflow) {
-      setWorkflowName(workflow.workflowName);
-      setSvgTaskNodes(workflow.svgTaskNodes);
+      setWorkflowName(workflow.name);
+      setSvgTaskNodes(workflow.taskNodes);
     }
     setSaving(true);
   }, [workflowId]);
