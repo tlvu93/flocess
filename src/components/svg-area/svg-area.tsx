@@ -14,7 +14,11 @@ const SVGArea = () => {
   const { setSelectedTaskNode } = useWorkflowContext();
   const { openModal } = useModal();
 
-  const { svgTaskNodes, updateTaskNode, addTaskNode } = useWorkflowContext();
+  const {
+    taskNodes: svgTaskNodes,
+    updateTaskNode,
+    addTaskNode,
+  } = useWorkflowContext();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const openEditModal = () => {

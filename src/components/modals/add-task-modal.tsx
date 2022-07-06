@@ -25,7 +25,7 @@ function AddModal() {
 
   const onAddTaskClick = () => {
     const data: Task = {
-      id: '0',
+      id: '_',
       name: title,
       color: color,
     };

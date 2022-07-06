@@ -1,29 +1,34 @@
 import { v4 as uuid } from 'uuid';
 
-export const loadWorkflow = (workflowId: string) => {
-  // Should return a list of workflows or empty
-
+export const loadWorkflows = () => {
   let parsedNodes = localStorage.getItem('workflows');
 
   if (!parsedNodes) {
-    console.log('No items found in localStorage');
-    return null;
+    console.log('No workflow found in localStorage');
+    return [];
   } else {
     let workflows: Workflow[] = JSON.parse(parsedNodes!);
-
-    let index = workflows.findIndex((wf) => wf.id === workflowId);
-
-    if (index === -1) {
-      return null;
-    } else {
-      return workflows[index];
-    }
+    return workflows;
   }
+};
+
+export const loadWorkflow = (workflows: Workflow[], workflowId: string) => {
+  // Should return a list of workflows or empty
+
+  let index = workflows.findIndex((wf) => wf.id === workflowId);
+
+  if (index === -1) {
+    console.log(`No workflow with id: ${workflowId} found`);
+    return null;
+  }
+
+  return workflows[index];
 };
 
 export const saveWorkflow = (
   name: string,
   id: string,
+  workflows: Workflow[],
   taskNodes: SVGTaskNode[]
 ) => {
   const workflow: Workflow = {
@@ -31,26 +36,14 @@ export const saveWorkflow = (
     id,
     taskNodes,
   };
+  // Check if workflow already exist
+  let index = workflows.findIndex((wf) => wf.id === workflow.id);
 
-  let parsedNodes = localStorage.getItem('workflows');
-  if (!parsedNodes) {
-    let workflows = [workflow];
-    localStorage.setItem('workflows', JSON.stringify(workflows));
+  if (index === -1) {
+    localStorage.setItem('workflows', JSON.stringify([...workflows, workflow]));
   } else {
-    // Check if Workflow already exist
-    let workflows: Workflow[] = JSON.parse(parsedNodes!);
-
-    let index = workflows.findIndex((wf) => wf.id === workflow.id);
-
-    if (index === -1) {
-      localStorage.setItem(
-        'workflows',
-        JSON.stringify([...workflows, workflow])
-      );
-    } else {
-      workflows[index] = workflow;
-      localStorage.setItem('workflows', JSON.stringify(workflows));
-    }
+    workflows[index] = workflow;
+    localStorage.setItem('workflows', JSON.stringify(workflows));
   }
 };
 

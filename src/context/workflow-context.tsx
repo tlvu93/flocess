@@ -1,10 +1,16 @@
-import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { loadWorkflow, saveWorkflow } from 'src/utils/fetchItems';
+import { loadWorkflows } from 'src/utils/workflow-utils';
 import { v4 as uuid } from 'uuid';
 
 interface WorkflowContext {
-  svgTaskNodes: SVGTaskNode[];
+  workflows: Workflow[];
+  selectedWorkflow: Workflow;
+  setSelectedWorkflow: (workflow: Workflow) => void;
+  addWorkflow: (workflow: Workflow) => void;
+  updateWorkflow: (workflow: Workflow) => void;
+  deleteWorkflow: (id: string) => void;
+
+  taskNodes: SVGTaskNode[];
   addTaskNode: (data: SVGTaskNode) => void;
   updateTaskNode: (data: SVGTaskNode) => void;
   deleteTaskNode: (id: string) => void;
@@ -16,64 +22,106 @@ const WorkflowContext = createContext<WorkflowContext>({} as WorkflowContext);
 export const useWorkflowContext = () => useContext(WorkflowContext);
 
 const WorkflowState = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-  const { id } = router.query;
-  const [workflowName, setWorkflowName] = useState('');
-  const [workflowId, setWorkflowId] = useState<string>('');
-  const [svgTaskNodes, setSvgTaskNodes] = useState<SVGTaskNode[]>([]);
+  /*Workflow States*/
+  const [workflows, setWorkflows] = useState<Workflow[]>([]);
+  const [selectedWorkflow, setSelectedWorkflow] = useState<Workflow>(
+    {} as Workflow
+  );
+
+  /*TaskNode States* */
+  const [taskNodes, setTaskNodes] = useState<SVGTaskNode[]>([]);
   const [selectedTaskNode, setSelectedTaskNode] = useState<SVGTaskNode>(
     {} as SVGTaskNode
   );
   const [saving, setSaving] = useState(false);
 
+  // Load all workflows on start
   useEffect(() => {
-    if (typeof id === 'string') setWorkflowId(id);
-  }, [id]);
-  // Loads the Nodes on start
-
-  useEffect(() => {
-    if (workflowId === '') return;
-
-    let workflow = loadWorkflow(workflowId);
-
-    if (workflow) {
-      setWorkflowName(workflow.name);
-      setSvgTaskNodes(workflow.taskNodes);
-    }
+    console.log('Loading workflows...');
+    let workflows = loadWorkflows();
+    console.log('workflows: ', workflows);
+    setWorkflows(workflows);
     setSaving(true);
-  }, [workflowId]);
+  }, []);
 
-  // Saves the nodes onChange
+  // Set the Workflow on selectedWorkflow change
   useEffect(() => {
-    if (!saving || !workflowId) return;
+    if (!saving || !selectedWorkflow.id) return;
 
-    saveWorkflow(workflowName, workflowId, svgTaskNodes);
-  }, [svgTaskNodes, saving, workflowName, workflowId]);
+    // Check if workflow already exist
+    let index = workflows.findIndex((wf) => wf.id === selectedWorkflow.id);
+
+    if (index === -1) {
+      // Append new Workflow
+      localStorage.setItem(
+        'workflows',
+        JSON.stringify([...workflows, selectedWorkflow])
+      );
+    } else {
+      // Update workflow
+      let updatedWorkflows = workflows;
+      updatedWorkflows[index] = selectedWorkflow;
+      setWorkflows(updatedWorkflows);
+    }
+  }, [saving, selectedWorkflow, workflows]);
+
+  // Saves the Workflow on changes
+  useEffect(() => {
+    if (!saving) return;
+    localStorage.setItem('workflows', JSON.stringify(workflows));
+  }, [saving, workflows]);
+
+  const addWorkflow = (workflow: Workflow) => {
+    workflow.id = uuid();
+
+    setWorkflows([...workflows, workflow]);
+  };
+
+  const updateWorkflow = (workflow: Workflow) => {
+    const updatedWorkflows = workflows.map<Workflow>((node) => {
+      if (node.id === workflow.id) node = workflow;
+      return node;
+    });
+
+    setWorkflows(updatedWorkflows);
+  };
+
+  const deleteWorkflow = (id: string) => {
+    const updatedWorkflows = workflows.filter((workflow) => workflow.id !== id);
+    setWorkflows(updatedWorkflows);
+  };
 
   const addTaskNode = (data: SVGTaskNode) => {
     data.id = uuid();
 
-    setSvgTaskNodes([...svgTaskNodes, data]);
+    setTaskNodes([...taskNodes, data]);
   };
 
   const updateTaskNode = (data: SVGTaskNode) => {
-    const updatedTasks = svgTaskNodes.map<SVGTaskNode>((node) => {
+    const updatedTasks = taskNodes.map<SVGTaskNode>((node) => {
       if (node.id === data.id) node = data;
       return node;
     });
 
-    setSvgTaskNodes(updatedTasks);
+    setTaskNodes(updatedTasks);
   };
 
   const deleteTaskNode = (id: string) => {
-    const updatedTasks = svgTaskNodes.filter((task) => task.id !== id);
-    setSvgTaskNodes(updatedTasks);
+    const updatedTasks = taskNodes.filter((task) => task.id !== id);
+    setTaskNodes(updatedTasks);
   };
 
   return (
     <WorkflowContext.Provider
       value={{
-        svgTaskNodes,
+        workflows,
+        addWorkflow,
+        updateWorkflow,
+        deleteWorkflow,
+        selectedWorkflow,
+        setSelectedWorkflow,
+
+        taskNodes,
         addTaskNode,
         updateTaskNode,
         deleteTaskNode,

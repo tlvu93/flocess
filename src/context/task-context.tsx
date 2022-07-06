@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { fetchTasks } from 'src/utils/fetchItems';
+import { fetchTasks } from 'src/utils/workflow-utils';
 import { v4 as uuid } from 'uuid';
 
 // TaskContext
